@@ -25,7 +25,7 @@
         server-->>browser: the JavaScript file
         deactivate server
 
-        Note right of browser: The server executes the JavaScript file that fetche JSON
+        Note right of browser: The server executes the JavaScript file that fetches JSON
         
         browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
         activate server
