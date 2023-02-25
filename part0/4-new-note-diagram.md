@@ -8,7 +8,7 @@
         server-->>browser: Note added to server
         deactivate server
 
-        Note right of browser: The server executes a script storing appending the note to JSON
+        Note right of browser: The server executes a script appending the note to JSON
         
         browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
         activate server
