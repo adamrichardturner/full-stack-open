@@ -5,25 +5,25 @@
         
         browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
         activate server
-        server-->>browser: the HTML document
+        server-->>browser: HTML document
         deactivate server
         
         browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
         activate server
         server-->>browser: the css file
         deactivate server
-        
+
         browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
         activate server
         server-->>browser: the JavaScript file
         deactivate server
 
-        Note right of browser: The server executes the JavaScript file that renders data in the JSON file
+        Note right of browser: The server executes the JavaScript file that fetches JSON
         
         browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
         activate server
-        server-->>browser: [{"content":"ssssssssssss","date":"2023-02-26T16:43:36.083Z"}...]
+        server-->>browser: [{"content":"Single Page Application","date":"2023-02-24T15:45:34.704Z"}...]
         deactivate server    
 
-        Note right of browser: The DOM is manipulated by the JavaScript file, displaying rendered data from the JSON file
+        Note right of browser: The browser executes the callback function rendering notes
 ```
