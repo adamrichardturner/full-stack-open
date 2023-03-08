@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Votes from './Votes'
 
 const App = () => {
   // Store anecdotes here
@@ -20,16 +21,26 @@ const App = () => {
     return setSelected(rand)
   }
   // Managed points for votes on anecdote selected here
+  // Initialised to a 0 filled array of the same length of anecdotes array
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
   // Handle votes
   const handleVote = () => {
-    return setPoints([...points, points[selected] += 1])
+      // Do not mutate existing state!
+      return setPoints(prevPoints => {
+        const newPoints = [...prevPoints]
+        newPoints[selected] += 1
+        return newPoints;
+      })
   }
+
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       {anecdotes[selected]}<br/>
+      <p>has {points[selected]} votes</p>
       <button onClick={handleVote}>vote</button>
-      <button onClick={handleAnecdote}>next anecdote</button>
+      <button onClick={handleAnecdote}>next anecdote</button><br />
+      {Math.max(...points) !== 0 ? <Votes anecdotes={anecdotes} points={points}/> : <p>Please vote</p>}
     </div>
   )
 }
