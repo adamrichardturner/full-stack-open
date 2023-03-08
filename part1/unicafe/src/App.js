@@ -24,15 +24,15 @@ const App = () => {
   return (
     <>
       <Header />
-        <Button name="good" 
-                handleButtonState={handleButtonState}>
-        </Button>
-        <Button name="neutral" 
-                handleButtonState={handleButtonState}>
-        </Button>
-        <Button name="bad" 
-                handleButtonState={handleButtonState}>
-        </Button>
+      <Button name="good" 
+              handleButtonState={handleButtonState}>
+      </Button>
+      <Button name="neutral" 
+              handleButtonState={handleButtonState}>
+      </Button>
+      <Button name="bad" 
+              handleButtonState={handleButtonState}>
+      </Button>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
