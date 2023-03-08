@@ -33,6 +33,7 @@ const App = () => {
       <Button name="bad" 
               handleButtonState={handleButtonState}>
       </Button>
+      <h2>statistics</h2>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
