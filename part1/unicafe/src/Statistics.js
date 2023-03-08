@@ -9,16 +9,16 @@ const Statistics = ({good, neutral, bad}) => {
     } else {
         return (
             <>
-              <p>
                 <table>
-                    <tr><StatisticsLine text="good" value={good}/><br /></tr>
-                    <tr><StatisticsLine text="neutral" value={neutral}/><br /></tr>
-                    <tr><StatisticsLine text="bad" value={bad}/><br /></tr>
-                    <tr><StatisticsLine text="all" value={good + neutral + bad}/><br /></tr>
-                    <tr><StatisticsLine text="average" value={(good + badPoints) / 2}/><br /></tr>
-                    <tr><StatisticsLine text="positive" value={(good / (good + neutral + bad)) * 100}/>%<br /></tr>
+                    <tbody>
+                        <tr><StatisticsLine text="good" value={good}/></tr>
+                        <tr><StatisticsLine text="neutral" value={neutral}/></tr>
+                        <tr><StatisticsLine text="bad" value={bad}/></tr>
+                        <tr><StatisticsLine text="all" value={good + neutral + bad}/></tr>
+                        <tr><StatisticsLine text="average" value={(good + badPoints) / 2}/></tr>
+                        <tr><StatisticsLine text="positive" value={(good / (good + neutral + bad)) * 100 + '%'}/></tr>
+                    </tbody>
                 </table>
-              </p>
             </>
         )
     }
