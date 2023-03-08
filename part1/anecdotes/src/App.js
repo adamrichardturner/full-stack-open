@@ -15,14 +15,20 @@ const App = () => {
   // Manage the selected anecdote state here
   const [selected, setSelected] = useState(0)
   // Handle clicks to randomly select an anecdote
-  const handleAnecdote = e => {
+  const handleAnecdote = () => {
     const rand = Math.floor(Math.random() * anecdotes.length)
     return setSelected(rand)
   }
-
+  // Managed points for votes on anecdote selected here
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
+  // Handle votes
+  const handleVote = () => {
+    return setPoints([...points, points[selected] += 1])
+  }
   return (
     <div>
       {anecdotes[selected]}<br/>
+      <button onClick={handleVote}>vote</button>
       <button onClick={handleAnecdote}>next anecdote</button>
     </div>
   )
