@@ -1,8 +1,10 @@
 import StatisticsLine from "./StatisticsLine"
 
 const Statistics = ({good, neutral, bad}) => {
-    // badPoints stores our bad points for average calculation
-    const badPoints = bad * -1
+    // Calculate average
+    const average = (good - bad) / (good + bad + neutral)
+    // Calculate positive percentage
+    const positive = (good / (good + neutral + bad)) * 100
     // conditional render if no button has been pressed
     if(good === 0 && neutral === 0 && bad === 0) {
         return(<p>No feedback given</p>)
@@ -15,8 +17,8 @@ const Statistics = ({good, neutral, bad}) => {
                         <tr><StatisticsLine text="neutral" value={neutral}/></tr>
                         <tr><StatisticsLine text="bad" value={bad}/></tr>
                         <tr><StatisticsLine text="all" value={good + neutral + bad}/></tr>
-                        <tr><StatisticsLine text="average" value={(good + badPoints) / 2}/></tr>
-                        <tr><StatisticsLine text="positive" value={(good / (good + neutral + bad)) * 100 + '%'}/></tr>
+                        <tr><StatisticsLine text="average" value={average || 0}/></tr>
+                        <tr><StatisticsLine text="positive" value={positive + '%'}/></tr>
                     </tbody>
                 </table>
             </>
