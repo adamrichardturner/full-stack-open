@@ -1,6 +1,6 @@
 const Part = ({ id, name, exercises }) => {
         return (
-            <p id={id}>{name} {exercises}</p>
+            <p key={id}>{name} {exercises}</p>
         )
 }
 
