@@ -15,12 +15,22 @@ const App = () => {
   // Handle submit of the form here
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Store in newPerson an object to be added to persons state array
-    const newPerson = { name: newName }
-    // Update persons array with newPerson concatenated to it
-    setPersons(prevPersons =>(prevPersons.concat(newPerson)))
-    // Reset newName state to empty string to reflect form submission
-    setNewName('')
+    // If newName is in persons, add it to an array in nameExists
+    const nameExists = persons.filter(person => person.name === newName)
+    // If nameExists has a length of 0, this is a unique name, we should
+    // add it to the persons array in state
+    if(nameExists.length === 0) {
+      // Store in newPerson an object to be added to persons state array
+      const newPerson = { name: newName }
+      // Update persons array with newPerson concatenated to it
+      setPersons(prevPersons =>(prevPersons.concat(newPerson)))
+      // Reset newName state to empty string to reflect form submission
+      setNewName('')
+    // Else if nameExists contains duplicated name, alert the user it is
+    // already in the phonebook
+    } else {
+      alert(`${newName} is already added to phonebook`)
+    }
   }
   // Store in displayPersons an array of persons
   const displayPersons = persons.map(person => (
