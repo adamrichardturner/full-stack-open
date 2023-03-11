@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Search from './Search'
+import UpdatePhoneBook from './UpdatePhoneBook'
+import People from './People'
 
 const App = () => {
   // Manage persons in phonebook state here
@@ -64,24 +67,16 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        <p>filter shown with </p>
-        <input value={searchTerm} onChange={handleSearch}/>
-      </div>
+      <Search searchTerm={searchTerm} handleSearch={handleSearch}/>
       <h2>add a new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleName}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumber}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <UpdatePhoneBook handleSubmit={handleSubmit} 
+                       newName={newName} 
+                       handleName={handleName} 
+                       newNumber={newNumber} 
+                       handleNumber={handleNumber}
+      />
       <h2>Numbers</h2>
-      {personsToShow.map(person => (<p key={person.id}>{person.name} {person.number}</p>))}
+      <People personsToShow={personsToShow}/>
     </div>
   )
 }
