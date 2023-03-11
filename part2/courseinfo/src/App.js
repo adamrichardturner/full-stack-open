@@ -1,7 +1,7 @@
 import Course from './Course'
 
 const App = () => {
-  // Store our course object here
+  // Store our courseData object here
   const coursesData = [
     {
       name: 'Half Stack application development',
@@ -46,12 +46,12 @@ const App = () => {
       ]
     }
   ]
-
+  // In courses, we hold an array of Course components
   const courses = coursesData.map(course => (
                       <Course key={course.id} course={course} />
                       )
                     )
-  
+
   return (
     <>
       <h1>Web development curriculum</h1>
