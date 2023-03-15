@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import peopleService from './services/people'
 import Search from './Search'
 import UpdatePhoneBook from './UpdatePhoneBook'
 import People from './People'
@@ -10,11 +10,10 @@ const App = () => {
 
   // Initial axios call to db.json
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
+    peopleService
+      .getAll()
+      .then(response => setPersons(response))
   }, [])
-
 
   // Manage newName additions here
   const [newName, setNewName] = useState('')
@@ -40,22 +39,28 @@ const App = () => {
   // Handle submit of the form here
   const handleSubmit = e => {
     e.preventDefault()
+    // Store maxId here for generating new Id on backend
+    const maxId = Math.max(persons.map(person => person.id))
+    // Store in newPerson an object to be added to persons
+    const newPerson = { name: newName, number: newNumber}
+    const addPerson = newPerson => {
+      // Add person to backend JSON
+      peopleService
+        .createPerson(newPerson, maxId)
+        .then(returnedPerson => {
+          setPersons(prevPersons => [...prevPersons, returnedPerson])
+        })
+    }
     // If newName is in persons, add it to an array in nameExists
     const nameExists = persons.filter(person => person.name === newName)
     // If nameExists has a length of 0, this is a unique name, we should
     // add it to the persons array in state
     if(nameExists.length === 0) {
-      // Get all ids from persons
-      const ids = persons.map(person => person.id)
-      // Generate unique id for new person object by adding 1 to the max
-      // of the existing ids
-      const newId = Math.max(...ids) + 1
-      // Store in newPerson an object to be added to persons state array
-      const newPerson = { name: newName, number: newNumber, id: newId }
-      // Update persons array with newPerson concatenated to it
-      setPersons(prevPersons =>(prevPersons.concat(newPerson)))
+      // Add person to backend JSON
+      addPerson(newPerson)
       // Reset newName state to empty string to reflect form submission
       setNewName('')
+      setNewNumber('')
     // Else if nameExists contains duplicated name, alert the user it is
     // already in the phonebook
     } else {
