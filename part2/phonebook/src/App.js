@@ -67,6 +67,17 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
     }
   }
+  // Handle delete button
+  const handleDelete = id => {
+    const person = persons.findIndex(person => person.id === id)
+    if(window.confirm(`Do you really want to delete ${persons[person].name}`)) {
+      peopleService
+        .deletePerson(id)
+      setPersons(prevPersons => {
+        return [...prevPersons.filter(person => person.id !== id)]
+      })
+    }
+  }
   // Store in personsToShow an array of persons with name and number
   // If searchTerm is false, return just the persons array
   // Else filter it to only include persons with names including searchTerm
@@ -86,7 +97,7 @@ const App = () => {
                        handleNumber={handleNumber}
       />
       <h2>Numbers</h2>
-      <People personsToShow={personsToShow}/>
+      <People personsToShow={personsToShow} handleDelete={handleDelete}/>
     </div>
   )
 }
