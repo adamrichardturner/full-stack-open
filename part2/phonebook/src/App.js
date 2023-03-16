@@ -37,6 +37,7 @@ const App = () => {
     setSearchTerm(term.toLowerCase())
   }
   // Handle submit of the form here
+  // Handle submit of the form here
   const handleSubmit = e => {
     e.preventDefault()
     // Store maxId here for generating new Id on backend
@@ -64,7 +65,16 @@ const App = () => {
     // Else if nameExists contains duplicated name, alert the user it is
     // already in the phonebook
     } else {
-      alert(`${newName} is already added to phonebook`)
+      // Update phone number
+      const personIndex = persons.findIndex(person => person.name === newName)
+      const {id, name} = persons[personIndex]
+      const updatedPerson = {id: id, name: name, number: newNumber}
+      if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+        peopleService.updateNumber(id, newNumber)
+        setPersons(prevPersons => {
+          return [...prevPersons.filter(person => person.id !== id), updatedPerson]
+        })
+      }
     }
   }
   // Handle delete button

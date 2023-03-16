@@ -7,14 +7,15 @@ const getAll = () => {
 }
 
 const createPerson = (newPerson, maxId) => {
-        newPerson.id = maxId + 1
-        const request = axios.post(baseUrl, newPerson)
-        return request.then(response => response.data)
+    newPerson.id = maxId + 1
+    const request = axios.post(baseUrl, newPerson)
+    return request.then(response => response.data)
 }
 
-const updatePerson = (id, newPerson) => {
-    const request = axios.push(`${baseUrl}/${id}`, newPerson)
-    return request.then(response => response.data)
+const updateNumber = (id, number) => {
+    const newNumber = { number: number }
+    const request = axios.put(`${baseUrl}/${id}`, newNumber)
+    request.then(response => response)
 }
 
 const deletePerson = id => {
@@ -25,6 +26,6 @@ const deletePerson = id => {
 export default {
     getAll,
     createPerson,
-    updatePerson,
+    updateNumber,
     deletePerson
 }
