@@ -3,6 +3,7 @@ import peopleService from './services/people'
 import Search from './Search'
 import UpdatePhoneBook from './UpdatePhoneBook'
 import People from './People'
+import Notification from './Notification'
 
 const App = () => {
   // Manage persons in phonebook state here
@@ -36,7 +37,8 @@ const App = () => {
     const term = e.target.value
     setSearchTerm(term.toLowerCase())
   }
-  // Handle submit of the form here
+  // Manage error state here
+  const [notification, setNotification] = useState(null)
   // Handle submit of the form here
   const handleSubmit = e => {
     e.preventDefault()
@@ -50,7 +52,16 @@ const App = () => {
         .createPerson(newPerson, maxId)
         .then(returnedPerson => {
           setPersons(prevPersons => [...prevPersons, returnedPerson])
+          setNotification({
+            notification: `Added ${returnedPerson.name}`,
+            type: 'positive'
+          })
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
         })
+        setNewName('')
+        setNewNumber('')
     }
     // If newName is in persons, add it to an array in nameExists
     const nameExists = persons.filter(person => person.name === newName)
@@ -59,9 +70,6 @@ const App = () => {
     if(nameExists.length === 0) {
       // Add person to backend JSON
       addPerson(newPerson)
-      // Reset newName state to empty string to reflect form submission
-      setNewName('')
-      setNewNumber('')
     // Else if nameExists contains duplicated name, alert the user it is
     // already in the phonebook
     } else {
@@ -74,18 +82,33 @@ const App = () => {
         setPersons(prevPersons => {
           return [...prevPersons.filter(person => person.id !== id), updatedPerson]
         })
+        setNotification({
+          notification: `Updated ${updatedPerson.name}'s number to ${updatedPerson.number}`,
+          type: 'positive'
+        })
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       }
     }
   }
   // Handle delete button
   const handleDelete = id => {
-    const person = persons.findIndex(person => person.id === id)
-    if(window.confirm(`Do you really want to delete ${persons[person].name}`)) {
+    const personId = persons.findIndex(person => person.id === id)
+    const personObj = persons[personId]
+    if(window.confirm(`Do you really want to delete ${personObj.name}`)) {
       peopleService
         .deletePerson(id)
       setPersons(prevPersons => {
         return [...prevPersons.filter(person => person.id !== id)]
       })
+      setNotification({
+        notification: `Deleted ${personObj.name} from the phonebook`,
+        type: 'negative'
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     }
   }
   // Store in personsToShow an array of persons with name and number
@@ -98,6 +121,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Search searchTerm={searchTerm} handleSearch={handleSearch}/>
       <h2>add a new</h2>
       <UpdatePhoneBook handleSubmit={handleSubmit} 
