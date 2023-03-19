@@ -1,4 +1,5 @@
 const Notification = ({ message }) => {
+    // Styles for the type of notification
     const positiveStyle = {
         color: 'green',
         fontWeight: 600,
@@ -15,15 +16,15 @@ const Notification = ({ message }) => {
         padding: 15,
         background: 'lightgrey'  
     }
-    
+
     if (message === null) {
         return null
     }
 
-    const {type, notification} = message
+    const { type, notification } = message
 
     let notificationStyle
-
+    // Depending on the notification type, change the style
     if(type === 'positive') {
         notificationStyle = positiveStyle
     } else if (type === 'negative') {
