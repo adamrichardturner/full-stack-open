@@ -1,11 +1,11 @@
 import CountriesList from './CountriesList'
 import CountryDetail from './CountryDetail'
 
-const RenderCountries = ({countries}) => {
+const RenderCountries = ({countries, handleClick, selectedCountry}) => {
     if (!countries) {
         return null
     } else if (countries.length > 1 && countries.length <= 10) {
-        return (<CountriesList countries={countries} />)
+        return (<CountriesList countries={countries} handleClick={handleClick} selectedCountry={selectedCountry}/>)
     } else if (countries.length > 10) {
         return (<p>Too many matches, specify another filter</p>)
     } else {

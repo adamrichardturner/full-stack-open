@@ -1,4 +1,4 @@
-const CountryDetail = ({country}) => {
+const CountryDetail = ({ country }) => {
     const name = country.name.common
     const capital = country.capital
     const area = country.area

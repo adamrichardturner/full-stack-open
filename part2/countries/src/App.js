@@ -32,6 +32,17 @@ const App = () => {
     setFilteredCountries(filtered)
   }
 
+  // Store click state for country show button here
+  const [selectedCountry, setSelectedCountry] = useState({isClicked: false, countryClicked: null})
+
+  const handleClick = (country) => {
+    // Handle clicks on the show/hide button here
+    setSelectedCountry({
+      isClicked: !selectedCountry.isClicked,
+      countryClicked: country
+    })
+  }
+
 
   return (
     <>
@@ -40,7 +51,7 @@ const App = () => {
           value={searchTerm} 
           onChange={handleSearch}>
       </input>
-      <RenderCountries countries={filteredCountries}/>
+      <RenderCountries countries={filteredCountries} handleClick={handleClick} selectedCountry={selectedCountry}/>
     </>
   )
 }
