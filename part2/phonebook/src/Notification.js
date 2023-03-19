@@ -15,6 +15,7 @@ const Notification = ({ message }) => {
         padding: 15,
         background: 'lightgrey'  
     }
+    
     if (message === null) {
         return null
     }

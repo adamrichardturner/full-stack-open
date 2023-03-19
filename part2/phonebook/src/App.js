@@ -9,12 +9,12 @@ const App = () => {
   // Manage persons in phonebook state here
   const [persons, setPersons] = useState(['Phonebook data being fetched'])
 
-  // Initial axios call to db.json
+  // Initial axios call to get people from directory
   useEffect(() => {
     peopleService
       .getAll()
       .then(response => setPersons(response))
-  }, [])
+  }, [persons])
 
   // Manage newName additions here
   const [newName, setNewName] = useState('')
@@ -60,9 +60,51 @@ const App = () => {
             setNotification(null)
           }, 5000)
         })
+        .catch(error => console.log(`Error adding new person ${error}`))
         setNewName('')
         setNewNumber('')
     }
+    const updateNumber = () => {
+      // Update phone number
+      const personIndex = persons.findIndex(person => person.name === newName)
+      const {id, name} = persons[personIndex]
+      const updatedPerson = {id: id, name: name, number: newNumber}
+      peopleService.getSingle(id).then(response => {
+        if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+          peopleService.updateNumber(id, newName, newNumber)
+              .then(returnedPerson => {
+                  setPersons(prevPersons => {
+                    const updatedPersons = [...prevPersons]
+                    updatedPersons[personIndex] = updatedPerson
+                    return updatedPersons
+                  })
+                  setNotification({
+                    notification: `Updated ${updatedPerson.name}'s number to ${updatedPerson.number}`,
+                    type: 'positive'
+                  })
+                  setTimeout(() => {
+                    setNotification(null)
+                  }, 5000)
+                  setNewName('')
+                  setNewNumber('')
+                })
+        }
+      }).catch(error => {
+        if(error.response.status === 404) {
+          setPersons(prevPersons => {
+            return [...prevPersons.filter(person => person.id !== id)]
+          })
+          setNotification({
+            notification: `Information of ${newName} has already been removed from server`,
+            type: 'negative'
+          })
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        }
+        console.log(error)
+      })
+    } 
     // If newName is in persons, add it to an array in nameExists
     const nameExists = persons.filter(person => person.name === newName)
     // If nameExists has a length of 0, this is a unique name, we should
@@ -73,23 +115,7 @@ const App = () => {
     // Else if nameExists contains duplicated name, alert the user it is
     // already in the phonebook
     } else {
-      // Update phone number
-      const personIndex = persons.findIndex(person => person.name === newName)
-      const {id, name} = persons[personIndex]
-      const updatedPerson = {id: id, name: name, number: newNumber}
-      if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
-        peopleService.updateNumber(id, newNumber)
-        setPersons(prevPersons => {
-          return [...prevPersons.filter(person => person.id !== id), updatedPerson]
-        })
-        setNotification({
-          notification: `Updated ${updatedPerson.name}'s number to ${updatedPerson.number}`,
-          type: 'positive'
-        })
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-      }
+      updateNumber(newPerson)
     }
   }
   // Handle delete button
