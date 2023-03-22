@@ -26,34 +26,67 @@ let persons = [
     }
 ]
 
+// Helper functions
+const generatedId = () => {
+    return Math.floor(Math.random() * 1000)
+}
+
 app.get('/api/persons', (request, response) => {
     // Get request to output persons as JSON
     response.json(persons)
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  // Find a person by id and respond with JSON
-  const id = Number(request.params.id)
-  const person = persons.find(note => note.id === id)
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+    // Find a person by id and respond with JSON
+    const id = Number(request.params.id)
+    const person = persons.find(person => person.id === id)
+    if (person) {
+      response.json(person)
+    } else {
+      response.status(404).end()
+    }
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  // Delete a person from the phonebook
-  const id = Number(request.params.id)
-  persons = persons.filter(note => note.id !== id)
-  response.status(204).end()
+    // Delete a person from the phonebook
+    const id = Number(request.params.id)
+    persons = persons.filter(person => person.id !== id)
+    response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+  // Add a person to the phonebook
+    const {name, number} = request.body
+    const duplicate = persons.find(person => person.name === name)
+    const id = generatedId()
+    if(!name) {
+      return response.status(400).json({
+        error: 'missing name'
+      })
+    } else if (!number) {
+      return response.status(400).json({
+        error: 'missing number'
+      })
+    } else if (duplicate) {
+      return response.status(400).json({
+        error: 'name must be unique'
+      })
+    }
+    const person = {
+      id,
+      name,
+      number
+    }
+    persons = persons.concat(person)
+
+    response.json(person)
 })
 
 app.get('/info', (request, response) => {
-  // Give general info on the status of the phonebook
-  const info = `Phonebook has info for ${persons.length} people<br/><br/>`
-  const date = new Date().toString()
-  response.send(info + date)
+    // Give general info on the status of the phonebook
+    const info = `Phonebook has info for ${persons.length} people<br/><br/>`
+    const date = new Date().toString()
+    response.send(info + date)
 })
 
 const PORT = 3001
