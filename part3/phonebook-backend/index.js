@@ -27,7 +27,14 @@ const persons = [
 ]
 
 app.get('/api/persons', (request, response) => {
+    // Get request to output persons as JSON
     response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+  const info = `Phonebook has info for ${persons.length} people<br/><br/>`
+  const date = new Date().toString()
+  response.send(info + date)
 })
 
 const PORT = 3001
