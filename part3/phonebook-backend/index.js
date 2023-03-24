@@ -5,7 +5,11 @@ const app = express()
 
 // Set up middleware
 app.use(express.json()); // Parse request body
-app.use(morgan('tiny')); // Log incoming requests
+
+// Define a new morgan token to log the request body
+morgan.token('req-body', req => JSON.stringify(req.body))
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :req-body')); // Log incoming requests
 
 let persons = [
     { 
