@@ -1,7 +1,11 @@
 const express = require('express')
+const morgan = require('morgan');
+
 const app = express()
 
-app.use(express.json())
+// Set up middleware
+app.use(express.json()); // Parse request body
+app.use(morgan('tiny')); // Log incoming requests
 
 let persons = [
     { 
