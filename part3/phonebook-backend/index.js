@@ -1,9 +1,11 @@
 const express = require('express')
 const morgan = require('morgan');
+const cors = require('cors')
 
 const app = express()
 
 // Set up middleware
+app.use(cors())
 app.use(express.json()) // Parse request body
 app.use(express.static('build')) // Return static files in build directory
 
@@ -98,7 +100,7 @@ app.get('/info', (request, response) => {
     response.send(info + date)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
