@@ -5,7 +5,7 @@ const cors = require('cors')
 const app = express()
 
 // Set up middleware
-app.use(cors())
+app.use(cors()) // enable cors
 app.use(express.json()) // Parse request body
 app.use(express.static('build')) // Return static files in build directory
 
