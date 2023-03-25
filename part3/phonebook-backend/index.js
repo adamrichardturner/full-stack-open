@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const app = express()
 
 // Set up middleware
-app.use(express.json()); // Parse request body
+app.use(express.json()) // Parse request body
+app.use(express.static('build')) // Return static files in build directory
 
 // Define a new morgan token to log the request body
 morgan.token('req-body', req => JSON.stringify(req.body))
