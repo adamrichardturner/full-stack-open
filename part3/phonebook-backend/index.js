@@ -58,7 +58,7 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  // Add a person to the phonebook
+  // Add a person to the phonebook database
   const body = request.body
   Person.find({ name: body.name }).then(res => {
     console.log(res)
