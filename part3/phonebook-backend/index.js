@@ -63,23 +63,17 @@ app.post('/api/persons', (request, response) => {
   Person.find({ name: body.name }).then(res => {
     console.log(res)
   })
-  console.log(`duplicate is ${duplicate}`)
 
   if(body.name === undefined) {
     return response.status(400).json({ error: 'missing name' })
   } else if (body.number === undefined) {
     return response.status(400).json({ error: 'missing number' })
   }
-  // } else if (Person.find({ name: body.name })) {
-  //   return response.status(400).json({ error: 'name must be unique' })
-  // }
 
   const person = new Person({
     name: body.name,
     number: body.number
   })
-
-  console.log(`person is ${person}`)
 
   person.save().then(savedPerson => {
     response.json(savedPerson)
