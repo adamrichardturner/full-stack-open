@@ -113,11 +113,16 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 
 app.get('/info', (request, response) => {
-    // Give general info on the status of the phonebook
-    const count = Person.countDocuments({})
-    const info = `Phonebook has info for ${count} people<br/><br/>`
-    const date = new Date().toString()
-    response.send(info + date)
+  Person.countDocuments({})
+    .then(count => {
+      const info = `Phonebook has info for ${count} people<br/><br/>`
+      const date = new Date().toString()
+      response.send(info + date)
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(500).send({ error: 'Failed to get the count of persons' })
+    })
 })
 
 // Handle unknown endpoints
