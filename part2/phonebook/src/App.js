@@ -64,6 +64,9 @@ const App = () => {
             notification: error.response.data.error,
             type: 'negative'
           })
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
         })
         setNewName('')
         setNewNumber('')
