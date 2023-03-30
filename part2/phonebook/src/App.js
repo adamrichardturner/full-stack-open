@@ -8,13 +8,12 @@ import Notification from './Notification'
 const App = () => {
   // Manage persons in phonebook state here
   const [persons, setPersons] = useState(['Phonebook data being fetched'])
-
   // Initial axios call to get people from directory
   useEffect(() => {
     peopleService
       .getAll()
       .then(response => setPersons(response))
-  }, [persons])
+  }, [])
 
   // Manage newName additions here
   const [newName, setNewName] = useState('')
@@ -60,7 +59,12 @@ const App = () => {
             setNotification(null)
           }, 5000)
         })
-        .catch(error => console.log(`Error adding new person ${error}`))
+        .catch(error => {
+          setNotification({
+            notification: error.response.data.error,
+            type: 'negative'
+          })
+        })
         setNewName('')
         setNewNumber('')
     }

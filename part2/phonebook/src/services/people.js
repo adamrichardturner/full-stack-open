@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = '/api/persons'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
@@ -14,7 +14,6 @@ const getSingle = id => {
 
 const createPerson = (newPerson, maxId) => {
     const newPersonObj = {
-        id: newPerson.id = maxId + 1,
         name: newPerson.name,
         number: newPerson.number
     }
