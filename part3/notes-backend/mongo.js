@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const process = require('process')
 
 if (process.argv.length<3) {
   console.log('give password as argument')
@@ -29,7 +30,7 @@ const note = new Note({
   important: true,
 })
 
-note.save().then(result => {
+note.save().then(() => {
   console.log('note saved!')
   mongoose.connection.close()
 })
