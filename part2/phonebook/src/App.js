@@ -34,7 +34,7 @@ const App = () => {
   // Handle the search input
   const handleSearch = e => {
     const term = e.target.value
-    setSearchTerm(term.toLowerCase())
+    setSearchTerm(term)
   }
   // Manage error state here
   const [notification, setNotification] = useState(null)
@@ -149,7 +149,7 @@ const App = () => {
   // Else filter it to only include persons with names including searchTerm
   const personsToShow = !searchTerm
     ? persons
-    : persons.filter(person => person.name.toLowerCase().includes(searchTerm))
+    : persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
     <div>
