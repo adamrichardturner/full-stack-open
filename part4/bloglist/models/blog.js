@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 // Define schema for the blog data
 const blogSchema = new mongoose.Schema({
@@ -6,10 +6,10 @@ const blogSchema = new mongoose.Schema({
   author: String,
   url: String,
   likes: Number,
-});
+})
 
 // Set a toJSON method to the blog schema to transform the object to plain JavaScript object
-blogSchema.set("toJSON", {
+blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
