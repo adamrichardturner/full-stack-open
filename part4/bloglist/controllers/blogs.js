@@ -2,14 +2,13 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
 // Define route to handle GET requests to /api/blogs, which retrieves all blog data from the MongoDB database
-blogsRouter.get('/api/blogs', (request, response) => {
-  Blog.find({}).then((blogs) => {
-    response.json(blogs)
-  })
+blogsRouter.get('/', async (request, response) => {
+  const blogs = await Blog.find({})
+  response.status(200).json(blogs)
 })
 
 // Define route to handle POST requests to /api/blogs, which adds a new blog to the MongoDB database
-blogsRouter.post('/api/blogs', (request, response) => {
+blogsRouter.post('/', (request, response) => {
   // Extract blog data from request body
   const body = request.body
 
