@@ -30,11 +30,48 @@ describe('blogs API returns correct length and type of data', () => {
   })
 })
 
+// Test that the unique identifier for blog posts is named id
 test('the unique identifier of blog posts is named id', async () => {
   const response = await api.get('/api/blogs')
-  response.body.forEach(obj => {
+  response.body.forEach((obj) => {
     expect(obj.id).toBeDefined()
   })
+})
+
+// Test that on adding a blog, count is increased and blogs are stored correctly in the database
+test('blog posts added increases blog count and content is stored correctly in database', async () => {
+  // Define a test blog post object
+  const testBlog = {
+    title: 'Test Blog',
+    author: 'Adam Turner',
+    url: 'https://google.com/',
+    likes: 7,
+  }
+
+  // Add the test blog post to the database using the supertest API
+  await api
+    .post('/api/blogs')
+    .send(testBlog)
+    .expect(201) // Expect a successful POST request with a 201 status code
+    .expect('Content-Type', /application\/json/) // Expect a response with JSON content type
+
+  // Get the blogs from the database using the helper function
+  const blogsAtEnd = await helper.blogsInDb()
+
+  // Expect the length of the blogs array to increase by 1 after adding the test blog post
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  // Create an array of blog titles from the blogs in the database
+  const titles = blogsAtEnd.map(blog => blog.title)
+
+  // Expect the array of blog titles to contain the title of the test blog post
+  expect(titles).toContain(testBlog.title)
+
+  // Find the added blog post in the array of blogs in the database
+  const addedBlog = blogsAtEnd.find(blog => blog.title === testBlog.title)
+
+  // Expect the added blog post to match the properties of the test blog post object
+  expect(addedBlog).toMatchObject(testBlog)
 })
 
 // Close the database connection after all tests are complete

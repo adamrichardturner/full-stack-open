@@ -8,9 +8,9 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 // Define route to handle POST requests to /api/blogs, which adds a new blog to the MongoDB database
-blogsRouter.post('/', (request, response) => {
+blogsRouter.post('/', async (request, response) => {
   // Extract blog data from request body
-  const body = request.body
+  const body = await request.body
 
   // Check that all required fields are present
   if (body.title === undefined) {
