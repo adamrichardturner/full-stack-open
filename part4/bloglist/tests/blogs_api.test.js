@@ -74,6 +74,24 @@ test('blog posts added increases blog count and content is stored correctly in d
   expect(addedBlog).toMatchObject(testBlog)
 })
 
+test('likes property defaults to 0 if not included when adding a blog', async () => {
+  const testBlog = {
+    title: 'Test Blog Likes Default',
+    author: 'Arron Turner',
+    url: 'https://googles.com/'
+  }
+  // Add the test blog post to the database using the supertest API
+  await api
+    .post('/api/blogs')
+    .send(testBlog)
+    .expect(201) // Expect a successful POST request with a 201 status code
+    .expect('Content-Type', /application\/json/) // Expect a response with JSON content type
+
+  // Check if the test blog added has a likes property with value 0
+  const addedBlog = await Blog.findOne({ title: 'Test Blog Likes Default' })
+  expect(addedBlog.likes).toEqual(0)
+})
+
 // Close the database connection after all tests are complete
 afterAll(async () => {
   await mongoose.connection.close()

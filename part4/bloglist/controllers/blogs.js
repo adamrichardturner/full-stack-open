@@ -19,16 +19,13 @@ blogsRouter.post('/', async (request, response) => {
     return response.status(400).json({ error: 'missing author' })
   } else if (body.url === undefined) {
     return response.status(400).json({ error: 'missing url' })
-  } else if (body.likes === undefined) {
-    return response.status(400).json({ error: 'missing likes' })
   }
-
   // Create a new blog using the extracted data
   const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes,
+    likes: body.likes ? body.likes : 0,
   })
 
   // Save the new blog to the MongoDB database
