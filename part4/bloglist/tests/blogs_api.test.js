@@ -26,8 +26,14 @@ describe('blogs API returns correct length and type of data', () => {
   // Test that the correct number of blogs are returned
   test('the correct number of blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body).toHaveLength(helper.initialBlogs.length)
+  })
+})
+
+test('the unique identifier of blog posts is named id', async () => {
+  const response = await api.get('/api/blogs')
+  response.body.forEach(obj => {
+    expect(obj.id).toBeDefined()
   })
 })
 
