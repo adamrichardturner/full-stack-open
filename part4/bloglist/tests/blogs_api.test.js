@@ -92,6 +92,19 @@ test('likes property defaults to 0 if not included when adding a blog', async ()
   expect(addedBlog.likes).toEqual(0)
 })
 
+// Test if title or url is missing that the server responds with a 400 status code
+test('if title or url is missing when adding a blog, server responds with 400 status', async () => {
+  const testBlog = {
+    author: 'Alvo Aalto',
+    likes: 25
+  }
+  await api
+    .post('/api/blogs')
+    .send(testBlog)
+    .expect(400) // Expect a status code 400 Bad Request where no title or url are defined
+    .expect('Content-Type', /application\/json/) // Expect a response with JSON content type
+})
+
 // Close the database connection after all tests are complete
 afterAll(async () => {
   await mongoose.connection.close()
