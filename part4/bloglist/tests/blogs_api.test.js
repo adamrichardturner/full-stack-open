@@ -105,7 +105,9 @@ test('if title or url is missing when adding a blog, server responds with 400 st
     .expect('Content-Type', /application\/json/) // Expect a response with JSON content type
 })
 
+// Group tests related to deleting a blog
 describe('deletion of a blog', () => {
+  // Test that deleting a blog with a valid id returns a 204 status code
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
@@ -116,13 +118,43 @@ describe('deletion of a blog', () => {
 
     const blogsAtEnd = await helper.blogsInDb()
 
+    // Expect the length of the blogs array to decrease by 1 after deleting a blog
     expect(blogsAtEnd).toHaveLength(
       helper.initialBlogs.length - 1
     )
 
+    // Create an array of blog titles from the blogs in the database
     const titles = blogsAtEnd.map(blog => blog.title)
 
+    // Expect the array of blog titles to not contain the title of the deleted blog post
     expect(titles).not.toContain(blogToDelete.title)
+  })
+})
+
+// Group tests related to updating a blog
+describe('updating a blog', () => {
+  // Test that updating a blog returns a 200 status code
+  test('succeeds with status code 200', async () => {
+    const testBlog = {
+      title: 'Updating this Blog',
+      author: 'Mac n Cheese',
+      url: 'https://google.com/',
+      likes: 20
+    }
+    const blogs = await helper.blogsInDb()
+    const blogToUpdate = blogs[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(testBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    // Get the updated blog from the database
+    const updatedBlog = await Blog.findOne({ title: 'Updating this Blog' })
+
+    // Expect the updated blog to have the same title as the test blog
+    expect(updatedBlog.title).toEqual(testBlog.title)
   })
 })
 
