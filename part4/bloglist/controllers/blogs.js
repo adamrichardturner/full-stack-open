@@ -15,8 +15,6 @@ blogsRouter.post('/', async (request, response) => {
   // Check that all required fields are present
   if (body.title === undefined) {
     return response.status(400).json({ error: 'missing title' })
-  } else if (body.author === undefined) {
-    return response.status(400).json({ error: 'missing author' })
   } else if (body.url === undefined) {
     return response.status(400).json({ error: 'missing url' })
   }
@@ -35,6 +33,11 @@ blogsRouter.post('/', async (request, response) => {
       response.status(201).json(result)
     })
     .catch((error) => console.log(error))
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+  await Blog.findByIdAndRemove(request.params.id)
+  response.status(204).end()
 })
 
 module.exports = blogsRouter
