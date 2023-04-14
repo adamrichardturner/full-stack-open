@@ -35,14 +35,19 @@ blogsRouter.post('/', async (request, response) => {
     .catch((error) => console.log(error))
 })
 
+// Delete a blog post with the specified id from the database
 blogsRouter.delete('/:id', async (request, response) => {
   await Blog.findByIdAndRemove(request.params.id)
+
+  // Send a successful response with a 204 status code and no content
   response.status(204).end()
 })
 
+// Update a blog post with the specified id in the database
 blogsRouter.put('/:id', (request, response, next) => {
   const body = request.body
 
+  // Create a blog object with the specified properties
   const blog = {
     title: body.title,
     author: body.author,
@@ -50,11 +55,14 @@ blogsRouter.put('/:id', (request, response, next) => {
     likes: body.likes
   }
 
+  // Update the blog post in the database with the specified id and properties
   Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
     .then(updatedBlog => {
+      // Send a successful response with a 200 status code and the updated blog post
       response.status(200).json(updatedBlog)
     })
     .catch(error => next(error))
 })
+
 
 module.exports = blogsRouter
