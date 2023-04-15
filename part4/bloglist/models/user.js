@@ -5,10 +5,19 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    validate: {
+      validator: (username) => {
+        return username && username.length >= 3
+      },
+      message: 'Username should be at least 3 characters long'
+    }
   },
   name: String,
-  passwordHash: String
+  passwordHash: {
+    type: String,
+    required: true,
+  }
 })
 
 userSchema.set('toJSON', {
