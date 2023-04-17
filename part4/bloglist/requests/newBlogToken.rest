@@ -1,0 +1,11 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0dXJuZXI4OCIsImlkIjoiNjQzZDQzZjFmMDIxYzA2ZmNmNDI4ODBjIiwiaWF0IjoxNjgxNzM2NzEwfQ.M5zJ0zIi2T28bpuviYk3LqQ1bSkvydStsycbvjDISPA
+
+{
+    "title": "On Liberty",
+    "author": "John Stuart Mill",
+    "url": "https://jsmill.com/",
+    "likes": 7,
+    "id": "64397c0f28cff7eeed4a2758"
+}

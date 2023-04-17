@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -8,10 +9,23 @@ blogsRouter.get('/', async (request, response) => {
   response.status(200).json(blogs)
 })
 
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
+
 // Define route to handle POST requests to /api/blogs, which adds a new blog to the MongoDB database
 blogsRouter.post('/', async (request, response) => {
   // Extract blog data from request body
   const body = request.body
+
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
 
   // Check that all required fields are present
   if (!body.title || !body.url) {
@@ -19,7 +33,7 @@ blogsRouter.post('/', async (request, response) => {
   }
 
   // Get the user object from the database
-  const user = await User.findById(body.id)
+  const user = await User.findById(decodedToken.id)
 
   // Create a new blog using the extracted data
   const blog = new Blog({
