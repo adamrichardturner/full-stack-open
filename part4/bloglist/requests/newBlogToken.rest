@@ -1,11 +1,10 @@
 post http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0dXJuZXI4OCIsImlkIjoiNjQzZDQzZjFmMDIxYzA2ZmNmNDI4ODBjIiwiaWF0IjoxNjgxNzM2NzEwfQ.M5zJ0zIi2T28bpuviYk3LqQ1bSkvydStsycbvjDISPA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0dXJuZXI4OCIsImlkIjoiNjQzZDQzZjFmMDIxYzA2ZmNmNDI4ODBjIiwiaWF0IjoxNjgxODM5MDMzLCJleHAiOjE2ODE4NDI2MzN9.RUHzI78npXNNkcy7tN4kJHDx5R4Qsa2UGudBZflKHgI
 
 {
-    "title": "On Liberty",
-    "author": "John Stuart Mill",
+    "title": "On Liberties",
+    "author": "John Stuartz Mill",
     "url": "https://jsmill.com/",
-    "likes": 7,
-    "id": "64397c0f28cff7eeed4a2758"
+    "likes": 7
 }
