@@ -41,8 +41,8 @@ app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
 // Defining Morgan Tiny logging
-morgan.token('body', function (req, res) {
-  return JSON.stringify(req.body)
+morgan.token('body', function (request) {
+  return JSON.stringify(request.body)
 })
 app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body')

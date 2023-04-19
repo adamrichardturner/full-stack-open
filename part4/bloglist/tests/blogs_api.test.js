@@ -4,7 +4,8 @@ const app = require('../app')
 const api = supertest(app)
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
-
+const testToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0dXJuZXI4OCIsImlkIjoiNjQzZDQzZjFmMDIxYzA2ZmNmNDI4ODBjIiwiaWF0IjoxNjgxOTA5NDM3LCJleHAiOjE2ODE5MTMwMzd9.DbDIfxjT8VbyIODty7XYF70Kxrf-XrvPCGUP79DjAz8'
 // Delete all blogs from the database and insert the initial blogs before each test
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -51,6 +52,7 @@ test('blog posts added increases blog count and content is stored correctly in d
   // Add the test blog post to the database using the supertest API
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${testToken}`) // Pass the token as a value of the Authorization header
     .send(testBlog)
     .expect(201) // Expect a successful POST request with a 201 status code
     .expect('Content-Type', /application\/json/) // Expect a response with JSON content type
@@ -62,27 +64,38 @@ test('blog posts added increases blog count and content is stored correctly in d
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
   // Create an array of blog titles from the blogs in the database
-  const titles = blogsAtEnd.map(blog => blog.title)
+  const titles = blogsAtEnd.map((blog) => blog.title)
 
   // Expect the array of blog titles to contain the title of the test blog post
   expect(titles).toContain(testBlog.title)
 
   // Find the added blog post in the array of blogs in the database
-  const addedBlog = blogsAtEnd.find(blog => blog.title === testBlog.title)
+  const addedBlog = blogsAtEnd.find((blog) => blog.title === testBlog.title)
 
   // Expect the added blog post to match the properties of the test blog post object
   expect(addedBlog).toMatchObject(testBlog)
+})
+
+test('adding a blog without a token fails with status code 401', async () => {
+  const testBlog = {
+    title: 'Test Blog',
+    author: 'Adam Turner',
+    url: 'https://google.com/'
+  }
+
+  await api.post('/api/blogs').send(testBlog).expect(401)
 })
 
 test('likes property defaults to 0 if not included when adding a blog', async () => {
   const testBlog = {
     title: 'Test Blog Likes Default',
     author: 'Arron Turner',
-    url: 'https://googles.com/'
+    url: 'https://googles.com/',
   }
   // Add the test blog post to the database using the supertest API
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${testToken}`) // Pass the token as a value of the Authorization header
     .send(testBlog)
     .expect(201) // Expect a successful POST request with a 201 status code
     .expect('Content-Type', /application\/json/) // Expect a response with JSON content type
@@ -96,10 +109,11 @@ test('likes property defaults to 0 if not included when adding a blog', async ()
 test('if title or url is missing when adding a blog, server responds with 400 status', async () => {
   const testBlog = {
     author: 'Alvo Aalto',
-    likes: 25
+    likes: 25,
   }
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${testToken}`) // Pass the token as a value of the Authorization header
     .send(testBlog)
     .expect(400) // Expect a status code 400 Bad Request where no title or url are defined
     .expect('Content-Type', /application\/json/) // Expect a response with JSON content type
@@ -112,19 +126,15 @@ describe('deletion of a blog', () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
-    await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204)
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
 
     // Expect the length of the blogs array to decrease by 1 after deleting a blog
-    expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
-    )
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
 
     // Create an array of blog titles from the blogs in the database
-    const titles = blogsAtEnd.map(blog => blog.title)
+    const titles = blogsAtEnd.map((blog) => blog.title)
 
     // Expect the array of blog titles to not contain the title of the deleted blog post
     expect(titles).not.toContain(blogToDelete.title)
@@ -139,7 +149,7 @@ describe('updating a blog', () => {
       title: 'Updating this Blog',
       author: 'Mac n Cheese',
       url: 'https://google.com/',
-      likes: 20
+      likes: 20,
     }
     const blogs = await helper.blogsInDb()
     const blogToUpdate = blogs[0]
