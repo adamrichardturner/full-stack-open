@@ -5,6 +5,5 @@ Content-Type: application/json
     "title": "Reacxyx Patties",
     "author": "Michael Chax",
     "url": "https://reactpatties.com/",
-    "likes": 7,
-    "id": "64397c0f28cff7eeed4a2758"
+    "likes": 7
 }
