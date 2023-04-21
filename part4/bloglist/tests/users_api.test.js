@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const supertest = require('supertest')
 const bcrypt = require('bcrypt')
 const app = require('../app')
@@ -71,7 +70,9 @@ describe('when we have one user in the db', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.error).toContain('Username should be at least 3 characters long')
+    expect(result.body.error).toContain(
+      'Username should be at least 3 characters long'
+    )
   })
 
   test('creation fails with proper status code and message if password less than 3 characters', async () => {
@@ -87,6 +88,8 @@ describe('when we have one user in the db', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.error).toContain('Password length must be at least 3 characters')
+    expect(result.body.error).toContain(
+      'Password length must be at least 3 characters'
+    )
   })
 })
