@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [newBlog, setNewBlog] = useState({
-    title: null,
-    author: null,
-    url: null
+    title: '',
+    author: '',
+    url: '',
   })
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -31,20 +31,32 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
-        username, password,
+        username,
+        password,
       })
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
+      setNotification({
+        notification: `${user.name} logged in`,
+        type: 'positive',
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     } catch (exception) {
-      console.error(exception)
+      setNotification({
+        notification: `Wrong username or password`,
+        type: 'negative',
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     }
   }
 
@@ -64,7 +76,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -73,7 +85,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -81,63 +93,74 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const blogForm = () => (
     <form onSubmit={handleNewBlog}>
       <div>
         title:
-          <input 
+        <input
           type="text"
           value={newBlog.title}
           name="Title"
-          onChange={({target}) => setNewBlog(prevState => ({
-            ...prevState,
-            title: target.value
-          }))}
-          />
+          onChange={({ target }) =>
+            setNewBlog((prevState) => ({
+              ...prevState,
+              title: target.value,
+            }))
+          }
+        />
       </div>
       <div>
         author:
-          <input 
+        <input
           type="text"
           value={newBlog.author}
           name="Author"
-          onChange={({target}) => setNewBlog(prevState => ({
-            ...prevState,
-            author: target.value
-          }))}
-          />
+          onChange={({ target }) =>
+            setNewBlog((prevState) => ({
+              ...prevState,
+              author: target.value,
+            }))
+          }
+        />
       </div>
       <div>
         url:
-          <input 
+        <input
           type="text"
           value={newBlog.url}
           name="Url"
-          onChange={({target}) => setNewBlog(prevState => ({
-            ...prevState,
-            url: target.value
-          }))}
-          />
+          onChange={({ target }) =>
+            setNewBlog((prevState) => ({
+              ...prevState,
+              url: target.value,
+            }))
+          }
+        />
       </div>
       <button type="submit">create</button>
     </form>
   )
 
-  const handleNewBlog = async event => {
+  const handleNewBlog = async (event) => {
     event.preventDefault()
     try {
       await blogService.create(newBlog)
-      setNewBlog({
-        title: null,
-        author: null,
-        url: null
+      setNotification({
+        notification: `a new blog ${newBlog.title} by ${newBlog.author} added`,
+        type: 'positive',
       })
-      blogService.getAll().then(blogs =>
-        setBlogs( blogs )
-      )
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+      setNewBlog({
+        title: '',
+        author: '',
+        url: '',
+      })
+      blogService.getAll().then((blogs) => setBlogs(blogs))
     } catch (exception) {
       console.error(exception)
     }
@@ -147,6 +170,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={notification} />
         {loginForm()}
       </div>
     )
@@ -155,11 +179,17 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      {user ? <><p>{user.name} is logged in</p><button onClick={handleLogout}>logout</button></> : null}
+      <Notification message={notification} />
+      {user ? (
+        <>
+          <p>{user.name} is logged in</p>
+          <button onClick={handleLogout}>logout</button>
+        </>
+      ) : null}
       {blogForm()}
-      {blogs.map(blog =>
+      {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
-      )}
+      ))}
     </div>
   )
 }
