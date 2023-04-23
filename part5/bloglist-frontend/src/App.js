@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -15,6 +16,8 @@ const App = () => {
     url: '',
   })
   const [notification, setNotification] = useState(null)
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -146,8 +149,10 @@ const App = () => {
 
   const handleNewBlog = async (event) => {
     event.preventDefault()
+    blogFormRef.current.toggleVisibility()
     try {
       await blogService.create(newBlog)
+      .then((returnedBlog) => setBlogs(blogs.concat(returnedBlog)))
       setNotification({
         notification: `a new blog ${newBlog.title} by ${newBlog.author} added`,
         type: 'positive',
@@ -155,14 +160,14 @@ const App = () => {
       setTimeout(() => {
         setNotification(null)
       }, 5000)
-      setNewBlog({
-        title: '',
-        author: '',
-        url: '',
-      })
-      blogService.getAll().then((blogs) => setBlogs(blogs))
     } catch (exception) {
-      console.error(exception)
+      setNotification({
+        notification: `Missing title or author`,
+        type: 'negative',
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     }
   }
 
@@ -186,7 +191,9 @@ const App = () => {
           <button onClick={handleLogout}>logout</button>
         </>
       ) : null}
-      {blogForm()}
+      <Togglable buttonLabel="new blog" ref={blogFormRef}>
+          {blogForm()}
+        </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
