@@ -134,7 +134,7 @@ const App = () => {
       <Notification message={notification} />
       {user ? (
         <>
-          <p>{user.name} is logged in</p>
+          {user.name} is logged in &nbsp;
           <button onClick={handleLogout}>logout</button>
         </>
       ) : null}
