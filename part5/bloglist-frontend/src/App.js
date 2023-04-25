@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -10,11 +11,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newBlog, setNewBlog] = useState({
-    title: '',
-    author: '',
-    url: '',
-  })
   const [notification, setNotification] = useState(null)
 
   const blogFormRef = useRef()
@@ -99,56 +95,7 @@ const App = () => {
     </form>
   )
 
-  const blogForm = () => (
-    <form onSubmit={handleNewBlog}>
-      <div>
-        title:
-        <input
-          type="text"
-          value={newBlog.title}
-          name="Title"
-          onChange={({ target }) =>
-            setNewBlog((prevState) => ({
-              ...prevState,
-              title: target.value,
-            }))
-          }
-        />
-      </div>
-      <div>
-        author:
-        <input
-          type="text"
-          value={newBlog.author}
-          name="Author"
-          onChange={({ target }) =>
-            setNewBlog((prevState) => ({
-              ...prevState,
-              author: target.value,
-            }))
-          }
-        />
-      </div>
-      <div>
-        url:
-        <input
-          type="text"
-          value={newBlog.url}
-          name="Url"
-          onChange={({ target }) =>
-            setNewBlog((prevState) => ({
-              ...prevState,
-              url: target.value,
-            }))
-          }
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
-  )
-
-  const handleNewBlog = async (event) => {
-    event.preventDefault()
+  const addBlog = async (newBlog) => {
     blogFormRef.current.toggleVisibility()
     try {
       await blogService.create(newBlog)
@@ -192,7 +139,7 @@ const App = () => {
         </>
       ) : null}
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
-          {blogForm()}
+          <BlogForm createBlog={addBlog} />
         </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
