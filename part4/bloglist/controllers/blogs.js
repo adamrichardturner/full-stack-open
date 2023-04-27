@@ -6,38 +6,43 @@ const User = require('../models/user')
 // Define route to handle GET requests to /api/blogs, which retrieves all blog data from the MongoDB database
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+
+  // Check if the user field is not set for any blog and add the first user in the database as the user
+  const firstUser = await User.findOne()
+  blogs.forEach(async (blog) => {
+    if (!blog.user && firstUser) {
+      blog.user = firstUser
+      await blog.save()
+    }
+  })
+
   response.status(200).json(blogs)
 })
 
 // Define route to handle POST requests to /api/blogs, which adds a new blog to the MongoDB database
-blogsRouter.post('/', async (request, response) => {
-  // Extract blog data from request body
+blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
-
-  // Check that all required fields are present
-  if (!body.title || !body.url) {
-    return response.status(400).json({ error: 'title or url is missing' })
-  }
-
-  // Get the user object from the database
   const user = request.user
 
-  // Create a new blog using the extracted data
   const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes ? body.likes : 0,
-    user: user.id,
+    likes: body.likes || 0,
+    user: user._id,
   })
 
-  // Save the new blog to the MongoDB database
-  const savedBlog = await blog.save()
-  user.blogs = user.blogs.concat(savedBlog.id)
-  await user.save()
+  try {
+    const savedBlog = await blog.save()
+    await savedBlog.populate('user', { username: 1, name: 1 })
 
-  // Send a successful response with a 201 status code and the saved blog data
-  response.status(201).json(savedBlog)
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
+
+    response.status(201).json(savedBlog)
+  } catch (exception) {
+    next(exception)
+  }
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
