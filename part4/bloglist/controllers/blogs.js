@@ -73,19 +73,21 @@ blogsRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
-// Update a blog post with the specified id in the database
 blogsRouter.put('/:id', async (request, response, next) => {
   const body = request.body
 
-  // Create a blog object with the specified properties
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-  }
-
   try {
+    // Find the blog post in the database with the specified id
+    const oldBlog = await Blog.findById(request.params.id)
+
+    // Create a blog object with the specified properties
+    const blog = {
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: (oldBlog.likes || 0) + body.likes,
+    }
+
     // Update the blog post in the database with the specified id and properties
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
       new: true,
@@ -97,5 +99,6 @@ blogsRouter.put('/:id', async (request, response, next) => {
     next(error)
   }
 })
+
 
 module.exports = blogsRouter
