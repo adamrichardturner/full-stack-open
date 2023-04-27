@@ -12,7 +12,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
-
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -97,9 +96,10 @@ const App = () => {
 
   const addBlog = async (newBlog) => {
     blogFormRef.current.toggleVisibility()
+  
     try {
-      await blogService.create(newBlog)
-      .then((returnedBlog) => setBlogs(blogs.concat(returnedBlog)))
+      const createdBlog = await blogService.create(newBlog)
+      setBlogs([...blogs, createdBlog])
       setNotification({
         notification: `a new blog ${newBlog.title} by ${newBlog.author} added`,
         type: 'positive',
@@ -115,6 +115,17 @@ const App = () => {
       setTimeout(() => {
         setNotification(null)
       }, 5000)
+    }
+  }
+  
+
+  const addLike = async (id, updatedBlog) => {
+    try {
+      await blogService
+        .update(id, updatedBlog)
+        .then((returnedBlog) => setBlogs(blogs.concat(returnedBlog)))
+    } catch (exception) {
+      console.error(exception)
     }
   }
 
@@ -139,10 +150,10 @@ const App = () => {
         </>
       ) : null}
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
-          <BlogForm createBlog={addBlog} />
-        </Togglable>
+        <BlogForm createBlog={addBlog} />
+      </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateLikes={addLike} />
       ))}
     </div>
   )
