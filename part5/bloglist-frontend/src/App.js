@@ -99,7 +99,7 @@ const App = () => {
 
   const addBlog = async (newBlog) => {
     blogFormRef.current.toggleVisibility()
-  
+
     try {
       const createdBlog = await blogService.create(newBlog)
       setBlogs([...blogs, createdBlog])
@@ -120,14 +120,35 @@ const App = () => {
       }, 5000)
     }
   }
-  
 
   const addLike = async (id, updatedBlog) => {
     try {
       const returnedBlog = await blogService.update(id, updatedBlog)
-      setBlogs(blogs.map(blog => blog.id === id ? returnedBlog : blog))
+      setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)))
     } catch (exception) {
       console.error(exception)
+    }
+  }
+
+  const removeBlog = async (blogToRemove) => {
+    if (
+      window.confirm(
+        `Remove blog ${blogToRemove.title} by ${blogToRemove.author}`
+      )
+    ) {
+      try {
+        await blogService.deleteBlog(blogToRemove.id)
+        setBlogs(blogs.filter((blog) => blog.id !== blogToRemove.id))
+        setNotification({
+          notification: `Blog ${blogToRemove.title} by ${blogToRemove.author} deleted`,
+          type: 'positive',
+        })
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+      } catch (exception) {
+        console.error(exception)
+      }
     }
   }
 
@@ -155,7 +176,13 @@ const App = () => {
         <BlogForm createBlog={addBlog} />
       </Togglable>
       {blogs.map((blog, index) => (
-        <Blog key={blog.id || index} blog={blog} updateLikes={addLike} />
+        <Blog
+          key={blog.id || index}
+          blog={blog}
+          updateLikes={addLike}
+          removeBlog={removeBlog}
+          user={user}
+        />
       ))}
     </div>
   )
