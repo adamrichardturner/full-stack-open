@@ -121,9 +121,8 @@ const App = () => {
 
   const addLike = async (id, updatedBlog) => {
     try {
-      await blogService
-        .update(id, updatedBlog)
-        .then((returnedBlog) => setBlogs(blogs.concat(returnedBlog)))
+      const returnedBlog = await blogService.update(id, updatedBlog)
+      setBlogs(blogs.map(blog => blog.id === id ? returnedBlog : blog))
     } catch (exception) {
       console.error(exception)
     }
@@ -152,8 +151,8 @@ const App = () => {
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateLikes={addLike} />
+      {blogs.map((blog, index) => (
+        <Blog key={blog.id || index} blog={blog} updateLikes={addLike} />
       ))}
     </div>
   )
