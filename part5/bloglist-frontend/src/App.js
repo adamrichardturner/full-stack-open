@@ -52,7 +52,7 @@ const App = () => {
       }, 5000)
     } catch (exception) {
       setNotification({
-        notification: `Wrong username or password`,
+        notification: 'Wrong username or password',
         type: 'negative',
       })
       setTimeout(() => {
@@ -112,7 +112,7 @@ const App = () => {
       }, 5000)
     } catch (exception) {
       setNotification({
-        notification: `Missing title or author`,
+        notification: 'Missing title or author',
         type: 'negative',
       })
       setTimeout(() => {
