@@ -57,11 +57,9 @@ const App = () => {
 
   const addNote = (noteObject) => {
     noteFormRef.current.toggleVisibility()
-    noteService
-      .create(noteObject)
-      .then(returnedNote => {     
-        setNotes(notes.concat(returnedNote))
-      })
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote))
+    })
   }
 
   const handleNoteChange = (event) => {
@@ -109,7 +107,7 @@ const App = () => {
       {user && (
         <div>
           <p>{user.name} logged in</p>
-          <Togglable buttonLabel='new note' ref={noteFormRef}>
+          <Togglable buttonLabel="new note" ref={noteFormRef}>
             <NoteForm createNote={addNote} />
           </Togglable>
         </div>
