@@ -59,8 +59,6 @@ blogsRouter.delete('/:id', async (request, response) => {
       .json({ error: 'only the creator can delete this blog' })
   }
 
-  console.log(request.params.id)
-
   // Delete the blog post from the database
   await Blog.findByIdAndRemove(request.params.id)
 
