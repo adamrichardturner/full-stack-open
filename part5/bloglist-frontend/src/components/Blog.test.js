@@ -10,19 +10,29 @@ test('renders title and author but not likes and url by default', () => {
     author: 'James Bond',
     url: 'www.doglistener.co.uk',
     likes: 15,
+    user: {
+      id: '64397c0f28cff7eeed4a2758',
+      name: 'Adam R Turner',
+      username: 'aturner'
+    }
   }
 
-  render(<Blog blog={testBlog} />)
+  const testUser = {
+    id: '64397c0f28cff7eeed4a2758',
+    name: 'Adam R Turner',
+    username: 'aturner'
+  }
 
-  const title = screen.getByText('Chips are for frying')
-  const author = screen.getByText('James Bond')
+  const { container } = render(<Blog blog={testBlog} user={testUser}/>)
 
-  expect(title).toBeDefined()
-  expect(author).toBeDefined()
+  const blogComponent = container.querySelector('.blog')
+  expect(blogComponent).toHaveTextContent(
+    'Chips are for frying'
+  )
+  expect(blogComponent).toHaveTextContent(
+    'James Bond'
+  )
+  const blogExtraDetails = container.querySelector('.blog-extra-details')
 
-  const url = screen.queryByText('www.doglistener.co.uk')
-  expect(url).not.toBeInTheDocument()
-
-  const likes = screen.queryByText('15')
-  expect(likes).not.toBeInTheDocument()
+  expect(blogExtraDetails).toHaveStyle('display: none;')
 })
