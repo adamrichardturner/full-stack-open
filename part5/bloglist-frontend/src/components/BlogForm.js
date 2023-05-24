@@ -30,6 +30,7 @@ const BlogForm = ({ createBlog }) => {
           type="text"
           value={newBlog.title}
           name="Title"
+          placeholder="Title"
           onChange={({ target }) =>
             setNewBlog((prevState) => ({
               ...prevState,
@@ -44,6 +45,7 @@ const BlogForm = ({ createBlog }) => {
           type="text"
           value={newBlog.author}
           name="Author"
+          placeholder="Author"
           onChange={({ target }) =>
             setNewBlog((prevState) => ({
               ...prevState,
@@ -58,6 +60,7 @@ const BlogForm = ({ createBlog }) => {
           type="text"
           value={newBlog.url}
           name="Url"
+          placeholder="URL"
           onChange={({ target }) =>
             setNewBlog((prevState) => ({
               ...prevState,
