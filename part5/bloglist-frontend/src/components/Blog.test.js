@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-test('renders title and author but not likes and url by default', () => {
+describe('<Blog />', () => {
   const testBlog = {
     title: 'Chips are for frying',
     author: 'James Bond',
@@ -13,26 +13,36 @@ test('renders title and author but not likes and url by default', () => {
     user: {
       id: '64397c0f28cff7eeed4a2758',
       name: 'Adam R Turner',
-      username: 'aturner'
-    }
+      username: 'aturner',
+    },
   }
-
   const testUser = {
     id: '64397c0f28cff7eeed4a2758',
     name: 'Adam R Turner',
-    username: 'aturner'
+    username: 'aturner',
   }
 
-  const { container } = render(<Blog blog={testBlog} user={testUser}/>)
+  let container
 
-  const blogComponent = container.querySelector('.blog')
-  expect(blogComponent).toHaveTextContent(
-    'Chips are for frying'
-  )
-  expect(blogComponent).toHaveTextContent(
-    'James Bond'
-  )
-  const blogExtraDetails = container.querySelector('.blog-extra-details')
+  beforeEach(() => {
+    container = render(<Blog blog={testBlog} user={testUser} />).container
+  })
 
-  expect(blogExtraDetails).toHaveStyle('display: none;')
+  test('renders title and author but not likes and url by default', () => {
+    const blogComponent = container.querySelector('.blog')
+    expect(blogComponent).toHaveTextContent('Chips are for frying')
+    expect(blogComponent).toHaveTextContent('James Bond')
+    const blogExtraDetails = container.querySelector('.blog-extra-details')
+
+    expect(blogExtraDetails).toHaveStyle('display: none;')
+  })
+
+  test('url and likes are shown when the view button is pressed', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    await user.click(button)
+
+    const blogExtraDetails = container.querySelector('.blog-extra-details')
+    expect(blogExtraDetails).toHaveStyle('display: block')
+  })
 })
