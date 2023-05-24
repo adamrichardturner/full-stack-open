@@ -24,8 +24,10 @@ describe('<Blog />', () => {
 
   let container
 
+  const mockHandler = jest.fn()
+
   beforeEach(() => {
-    container = render(<Blog blog={testBlog} user={testUser} />).container
+    container = render(<Blog blog={testBlog} user={testUser} updateLikes={mockHandler}/>).container
   })
 
   test('renders title and author but not likes and url by default', () => {
@@ -44,5 +46,14 @@ describe('<Blog />', () => {
 
     const blogExtraDetails = container.querySelector('.blog-extra-details')
     expect(blogExtraDetails).toHaveStyle('display: block')
+  })
+
+  test('clicking the like button twice calls the event handler twice', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('like')
+    await user.click(button)
+    await user.click(button)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
