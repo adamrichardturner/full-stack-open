@@ -7,8 +7,8 @@ const process = require('process')
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
   console.log(authorization)
-  if (authorization && authorization.startsWith('bearer ')) {
-    return authorization.replace('bearer ', '')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
   }
   return null
 }
