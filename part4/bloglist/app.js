@@ -57,6 +57,11 @@ app.use('/api/users', usersRouter)
 // Using the login router
 app.use('/api/login', loginRouter)
 
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
+
 // Using custom unknown endpoint middleware
 app.use(middleware.unknownEndpoint)
 
