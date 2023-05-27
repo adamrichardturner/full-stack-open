@@ -35,4 +35,21 @@ describe('Blog app', function() {
         .and('have.css', 'border-style', 'solid')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('aturner')
+      cy.get('#password').type('Matrix88')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.get('.toggle-button').click()
+      cy.get('#title').type('A test blog')
+      cy.get('#author').type('Edgar Allan Poe')
+      cy.get('#url').type('www.example.com')
+      cy.get('#add-blog').click()
+      cy.contains('A test blog')
+    })
+  })
 })
