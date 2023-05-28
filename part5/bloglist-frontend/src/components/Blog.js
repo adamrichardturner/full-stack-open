@@ -40,11 +40,11 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
       <div style={showWhenVisible} className="blog-extra-details">
         {blog.url}<br />
         likes {blog.likes}&nbsp;
-        <button onClick={addNewLike}>like</button><br />
+        <button id="add-like" onClick={addNewLike}>like</button><br />
         {blog.user.name}
       </div>
       <div>
-        <button onClick={toggleDetails}>{visible ? 'hide' : 'view'}</button>
+        <button id="toggle-details" onClick={toggleDetails}>{visible ? 'hide' : 'view'}</button>
       </div>
       <div>
         {user.name === blog.user.name ? (

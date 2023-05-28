@@ -38,9 +38,10 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.get('#username').type('aturner')
-      cy.get('#password').type('Matrix88')
-      cy.get('#login-button').click()
+      cy.login({ username: 'aturner', password: 'Matrix88' })
+      cy.createBlog({ title: 'Weeping Hearts', author: 'John Smith', url: 'www.google.com' })
+      cy.createBlog({ title: 'Weeping Parts', author: 'John Tiff', url: 'www.gooas.com' })
+      cy.createBlog({ title: 'Weeping Hearst', author: 'John Biff', url: 'www.googew.com' })
     })
 
     it('A blog can be created', function() {
@@ -50,6 +51,12 @@ describe('Blog app', function() {
       cy.get('#url').type('www.example.com')
       cy.get('#add-blog').click()
       cy.contains('A test blog')
+    })
+
+    it('A blog can be liked', function() {
+      cy.get('#toggle-details').click()
+      cy.get('#add-like').click()
+      cy.contains('likes 1')
     })
   })
 })
