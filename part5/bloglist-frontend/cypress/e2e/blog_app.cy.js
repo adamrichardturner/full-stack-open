@@ -1,12 +1,18 @@
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
-    const user = {
+    const userOne = {
       name: 'Adam Turner',
       username: 'aturner',
       password: 'Matrix88'
     }
-    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+    const userTwo = {
+      name: 'John Smith',
+      username: 'jsmith',
+      password: 'Test123'
+    }
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, userOne)
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, userTwo)
     cy.visit('')
   })
 
@@ -50,6 +56,7 @@ describe('Blog app', function() {
       cy.get('#author').type('Edgar Allan Poe')
       cy.get('#url').type('www.example.com')
       cy.get('#add-blog').click()
+      cy.visit('')
       cy.contains('A test blog')
     })
 
@@ -57,6 +64,24 @@ describe('Blog app', function() {
       cy.get('#toggle-details').click()
       cy.get('#add-like').click()
       cy.contains('likes 1')
+    })
+
+    it('The user who created the blog can delete it', function() {
+      cy.contains('Weeping Hearts').parent().find('button')
+        .contains('remove')
+        .click()
+      cy.get('.notification')
+        .should('contain', 'Blog Weeping Hearts by John Smith deleted')
+        .and('have.css', 'color', 'rgb(0, 128, 0)')
+        .and('have.css', 'border-style', 'solid')
+    })
+
+    it('Only the user who created the blog can see the remove button', function() {
+      cy.contains('Weeping Hearts').parent().find('button')
+        .contains('remove')
+      cy.login({ username: 'jsmith', password: 'Test123' })
+      cy.contains('Weeping Hearts').parent().find('button')
+        .contains('remove').should('not.exist')
     })
   })
 })
