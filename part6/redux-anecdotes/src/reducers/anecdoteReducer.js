@@ -17,6 +17,7 @@ const asObject = (anecdote) => {
   }
 }
 
+// Action Creators
 export const newVote = id => ({ type: 'VOTE', data: { id } })
 export const newAnecdote = anecdote => ({ type: 'ADD_ANECDOTE', data: { anecdote } })
 
