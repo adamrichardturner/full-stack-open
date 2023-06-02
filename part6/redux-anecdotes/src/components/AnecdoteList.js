@@ -12,7 +12,7 @@ const AnecdoteList = () => {
     const dispatch = useDispatch()
     const vote = (id) => {
     dispatch(newVote(id))
-    // Test
+    // Fixing commits
     }
     return (
         anecdotes.map(anecdote =>
