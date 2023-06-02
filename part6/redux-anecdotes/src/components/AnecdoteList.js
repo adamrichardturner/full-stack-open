@@ -12,6 +12,7 @@ const AnecdoteList = () => {
     const dispatch = useDispatch()
     const vote = (id) => {
     dispatch(newVote(id))
+    // Test
     }
     return (
         anecdotes.map(anecdote =>
