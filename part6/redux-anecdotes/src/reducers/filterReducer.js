@@ -1,4 +1,4 @@
-// Action Creators
+// Action Creators Here
 export const newFilter = (term) => ({ type: 'SET_FILTER', data: term })
 
 const initialState = ''
