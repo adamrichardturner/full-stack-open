@@ -5,7 +5,6 @@ const Filter = () => {
   const dispatch = useDispatch()
   const filterTerm = useSelector(state => state.filter)
   const handleChange = (event) => {
-    // input-field value is in variable event.target.value
     dispatch(newFilter(event.target.value))
   }
   const style = {
