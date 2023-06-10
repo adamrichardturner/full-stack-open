@@ -12,7 +12,7 @@ const asObject = (anecdote) => {
   }
 }
 
-// Anecdoteslice
+// Anecdote Slice
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState: [],
