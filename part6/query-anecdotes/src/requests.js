@@ -18,3 +18,12 @@ export const createAnecdote = (newAnecdote) => {
       throw new Error('An error occurred while creating the anecdote.')
     })
 }
+
+export const updateVotes = ({content, id, votes}) => {
+    const obj = {
+        content,
+        id,
+        votes: votes + 1
+    }
+    return axios.put(`${baseUrl}/${id}`, obj).then(res => res.data)
+}
