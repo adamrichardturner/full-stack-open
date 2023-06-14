@@ -8,10 +8,16 @@ const App = () => {
     console.log('vote')
   }
 
-  const result = useQuery('notes', getAnecdotes)
+  const result = useQuery('notes', getAnecdotes, {
+    retry: false,
+  })
 
   if (result.isLoading) {
     return <div>loading data...</div>
+  }
+
+  if (result.isError) {
+    return <div>anecdote service not available due to problems in server</div>
   }
 
   const anecdotes = result.data
@@ -19,21 +25,19 @@ const App = () => {
   return (
     <div>
       <h3>Anecdote app</h3>
-    
+
       <Notification />
       <AnecdoteForm />
-    
-      {anecdotes.map(anecdote =>
+
+      {anecdotes.map((anecdote) => (
         <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
-          </div>
+          <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
             <button onClick={() => handleVote(anecdote)}>vote</button>
           </div>
         </div>
-      )}
+      ))}
     </div>
   )
 }
