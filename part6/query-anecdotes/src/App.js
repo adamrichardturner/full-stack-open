@@ -8,7 +8,7 @@ const App = () => {
     console.log('vote')
   }
 
-  const result = useQuery('notes', getAnecdotes, {
+  const result = useQuery('anecdotes', getAnecdotes, {
     retry: false,
   })
 
