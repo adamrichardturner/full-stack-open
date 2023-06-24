@@ -21,17 +21,17 @@ const AnecdoteForm = () => {
     onSuccess: () => {
       queryClient.invalidateQueries('anecdotes')
     },
+    onError: () => {
+      dispatchNotification({
+        type: 'SHOW_NOTIFICATION',
+        payload: 'Too short anecdote, must have a length of 5 or more.'
+      })
+    }
   })
 
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-
-    if (content.length < 5) {
-      console.error('Anecdote content must be at least 5 characters long')
-      return
-    }
-
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate(asObject(content))
     dispatchNotification({
