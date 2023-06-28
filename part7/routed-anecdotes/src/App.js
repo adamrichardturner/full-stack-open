@@ -98,7 +98,7 @@ const CreateNew = (props) => {
       content: content.value,
       author: author.value,
       info: info.value,
-      votes: 0
+      votes: 0,
     })
     navigate('/')
   }
