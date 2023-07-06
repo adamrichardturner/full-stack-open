@@ -1,0 +1,10 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0dXJuZXI4OCIsImlkIjoiNjQzZDQzZjFmMDIxYzA2ZmNmNDI4ODBjIiwiaWF0IjoxNjgxOTA3NzI0LCJleHAiOjE2ODE5MTEzMjR9.rKhtmakrFSIwJ5pO9VoveCme3SmwiHHhkaKIgZmGEfk
+
+{
+    "title": "On Liberties",
+    "author": "John Stuartz Mill",
+    "url": "https://jsmill.com/",
+    "likes": 7
+}
