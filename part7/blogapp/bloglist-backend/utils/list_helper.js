@@ -2,7 +2,7 @@
 const _ = require('lodash') // Lodash library
 
 // Function to return a fixed value of 1
-const dummy = (blogs) => {
+const dummy = () => {
   return 1
 }
 

@@ -27,7 +27,9 @@ describe('<Blog />', () => {
   const mockHandler = jest.fn()
 
   beforeEach(() => {
-    container = render(<Blog blog={testBlog} user={testUser} updateLikes={mockHandler}/>).container
+    container = render(
+      <Blog blog={testBlog} user={testUser} updateLikes={mockHandler} />
+    ).container
   })
 
   test('renders title and author but not likes and url by default', () => {

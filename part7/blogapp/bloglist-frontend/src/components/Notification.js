@@ -31,7 +31,11 @@ const Notification = ({ message }) => {
     notificationStyle = negativeStyle
   }
 
-  return <div className='notification' style={notificationStyle}>{notification}</div>
+  return (
+    <div className="notification" style={notificationStyle}>
+      {notification}
+    </div>
+  )
 }
 
 export default Notification

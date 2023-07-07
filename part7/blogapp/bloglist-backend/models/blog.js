@@ -8,8 +8,8 @@ const blogSchema = new mongoose.Schema({
   likes: Number,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }
+    ref: 'User',
+  },
 })
 
 // Set a toJSON method to the blog schema to transform the object to plain JavaScript object

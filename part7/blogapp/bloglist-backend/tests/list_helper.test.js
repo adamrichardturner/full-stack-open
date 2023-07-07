@@ -113,7 +113,7 @@ describe('favorite blogs', () => {
 describe('most frequent blogger', () => {
   const mostFrequent = {
     author: 'Robert C. Martin',
-    blogs: 3
+    blogs: 3,
   }
   test('when the list has multiple blogs, return the author and blog count as an object', () => {
     const result = listHelper.mostBlogs(manyBlogs)

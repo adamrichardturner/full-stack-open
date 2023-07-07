@@ -80,7 +80,7 @@ test('adding a blog without a token fails with status code 401', async () => {
   const testBlog = {
     title: 'Test Blog',
     author: 'Adam Turner',
-    url: 'https://google.com/'
+    url: 'https://google.com/',
   }
 
   await api.post('/api/blogs').send(testBlog).expect(401)

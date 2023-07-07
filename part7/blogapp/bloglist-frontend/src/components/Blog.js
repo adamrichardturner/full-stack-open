@@ -13,7 +13,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   }
 
   const updatedBlog = {
@@ -21,7 +21,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
     likes: 1,
     author: blog.author,
     title: blog.title,
-    url: blog.url
+    url: blog.url,
   }
 
   const addNewLike = () => {
@@ -38,17 +38,25 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
         {blog.title} {blog.author}
       </div>
       <div style={showWhenVisible} className="blog-extra-details">
-        {blog.url}<br />
+        {blog.url}
+        <br />
         likes {blog.likes}&nbsp;
-        <button id="add-like" onClick={addNewLike}>like</button><br />
+        <button id="add-like" onClick={addNewLike}>
+          like
+        </button>
+        <br />
         {blog.user.name}
       </div>
       <div>
-        <button id="toggle-details" onClick={toggleDetails}>{visible ? 'hide' : 'view'}</button>
+        <button id="toggle-details" onClick={toggleDetails}>
+          {visible ? 'hide' : 'view'}
+        </button>
       </div>
       <div>
         {user.name === blog.user.name ? (
-          <button id="remove-blog" onClick={deleteBlog}>remove</button>
+          <button id="remove-blog" onClick={deleteBlog}>
+            remove
+          </button>
         ) : null}
       </div>
     </div>
