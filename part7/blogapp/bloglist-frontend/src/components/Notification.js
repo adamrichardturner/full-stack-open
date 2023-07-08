@@ -1,4 +1,14 @@
-const Notification = ({ message }) => {
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
+
+const Notification = () => {
+  const dispatch = useDispatch()
+  const message = useSelector((state) => state.notification.notification)
+  const type = useSelector((state) => state.notification.type)
+  const timeout = useSelector((state) => state.notification.timeout)
+  console.log(message)
   // Styles for the type of notification
   const positiveStyle = {
     color: 'green',
@@ -17,11 +27,20 @@ const Notification = ({ message }) => {
     background: 'lightgrey',
   }
 
+  useEffect(() => {
+    if (message) {
+      console.log(message)
+      const timer = setTimeout(() => {
+        dispatch(setNotification('', '', 0))
+      }, timeout)
+
+      return () => clearTimeout(timer)
+    }
+  }, [message, timeout, dispatch])
+
   if (message === null) {
     return null
   }
-
-  const { type, notification } = message
 
   let notificationStyle
   // Depending on the notification type, change the style
@@ -33,7 +52,7 @@ const Notification = ({ message }) => {
 
   return (
     <div className="notification" style={notificationStyle}>
-      {notification}
+      {message}
     </div>
   )
 }

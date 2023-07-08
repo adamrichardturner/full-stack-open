@@ -5,14 +5,16 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { setNotification } from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
   const blogFormRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
@@ -43,21 +45,9 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      setNotification({
-        notification: `${user.name} logged in`,
-        type: 'positive',
-      })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      dispatch(setNotification(`${user.name} logged in`, 'positive', 5000))
     } catch (exception) {
-      setNotification({
-        notification: 'Wrong username or password',
-        type: 'negative',
-      })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      dispatch(setNotification('Wrong username or password', 'negative', 5000))
     }
   }
 
@@ -107,21 +97,15 @@ const App = () => {
     try {
       const createdBlog = await blogService.create(newBlog)
       setBlogs([...blogs, createdBlog])
-      setNotification({
-        notification: `a new blog ${newBlog.title} by ${newBlog.author} added`,
-        type: 'positive',
-      })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      dispatch(
+        setNotification(
+          `a new blog ${newBlog.title} by ${newBlog.author} added`,
+          'positive',
+          5000
+        )
+      )
     } catch (exception) {
-      setNotification({
-        notification: 'Missing title or author',
-        type: 'negative',
-      })
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      dispatch(setNotification('Missing title or author', 'negative', 5000))
     }
   }
 
@@ -129,6 +113,9 @@ const App = () => {
     try {
       const returnedBlog = await blogService.update(id, updatedBlog)
       setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)))
+      dispatch(
+        setNotification(`You liked ${returnedBlog.title}.`, 'positive', 5000)
+      )
     } catch (exception) {
       console.error(exception)
     }
@@ -143,13 +130,13 @@ const App = () => {
       try {
         await blogService.deleteBlog(blogToRemove.id)
         setBlogs(blogs.filter((blog) => blog.id !== blogToRemove.id))
-        setNotification({
-          notification: `Blog ${blogToRemove.title} by ${blogToRemove.author} deleted`,
-          type: 'positive',
-        })
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
+        dispatch(
+          setNotification(
+            `Blog ${blogToRemove.title} by ${blogToRemove.author} deleted`,
+            'positive',
+            5000
+          )
+        )
       } catch (exception) {
         console.error(exception)
       }
@@ -160,7 +147,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Notification message={notification} />
+        <Notification />
         {loginForm()}
       </div>
     )
@@ -169,7 +156,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={notification} />
+      <Notification />
       {user ? (
         <>
           {user.name} is logged in &nbsp;
