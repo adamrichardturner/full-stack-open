@@ -2,14 +2,15 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import BlogForm from './components/BlogForm'
+// import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { setNotification } from './reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
+import { initializeBlogs, setBlogs } from './reducers/blogsReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector((state) => state.blogs)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -17,11 +18,8 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs(sortedBlogs)
-    })
-  }, [])
+    dispatch(setBlogs(initializeBlogs()))
+  }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -91,57 +89,57 @@ const App = () => {
     </form>
   )
 
-  const addBlog = async (newBlog) => {
-    blogFormRef.current.toggleVisibility()
+  // const addBlog = async (newBlog) => {
+  //   blogFormRef.current.toggleVisibility()
 
-    try {
-      const createdBlog = await blogService.create(newBlog)
-      setBlogs([...blogs, createdBlog])
-      dispatch(
-        setNotification(
-          `a new blog ${newBlog.title} by ${newBlog.author} added`,
-          'positive',
-          5000
-        )
-      )
-    } catch (exception) {
-      dispatch(setNotification('Missing title or author', 'negative', 5000))
-    }
-  }
+  //   try {
+  //     // const createdBlog = await blogService.create(newBlog)
+  //     // setBlogs([...blogs, createdBlog])
+  //     dispatch(
+  //       setNotification(
+  //         `a new blog ${newBlog.title} by ${newBlog.author} added`,
+  //         'positive',
+  //         5000
+  //       )
+  //     )
+  //   } catch (exception) {
+  //     dispatch(setNotification('Missing title or author', 'negative', 5000))
+  //   }
+  // }
 
-  const addLike = async (id, updatedBlog) => {
-    try {
-      const returnedBlog = await blogService.update(id, updatedBlog)
-      setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)))
-      dispatch(
-        setNotification(`You liked ${returnedBlog.title}.`, 'positive', 5000)
-      )
-    } catch (exception) {
-      console.error(exception)
-    }
-  }
+  // const addLike = async (id, updatedBlog) => {
+  //   try {
+  //     const returnedBlog = await blogService.update(id, updatedBlog)
+  //     // setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)))
+  //     dispatch(
+  //       setNotification(`You liked ${returnedBlog.title}.`, 'positive', 5000)
+  //     )
+  //   } catch (exception) {
+  //     console.error(exception)
+  //   }
+  // }
 
-  const removeBlog = async (blogToRemove) => {
-    if (
-      window.confirm(
-        `Remove blog ${blogToRemove.title} by ${blogToRemove.author}`
-      )
-    ) {
-      try {
-        await blogService.deleteBlog(blogToRemove.id)
-        setBlogs(blogs.filter((blog) => blog.id !== blogToRemove.id))
-        dispatch(
-          setNotification(
-            `Blog ${blogToRemove.title} by ${blogToRemove.author} deleted`,
-            'positive',
-            5000
-          )
-        )
-      } catch (exception) {
-        console.error(exception)
-      }
-    }
-  }
+  // const removeBlog = async (blogToRemove) => {
+  //   if (
+  //     window.confirm(
+  //       `Remove blog ${blogToRemove.title} by ${blogToRemove.author}`
+  //     )
+  //   ) {
+  //     try {
+  //       await blogService.deleteBlog(blogToRemove.id)
+  //       // setBlogs(blogs.filter((blog) => blog.id !== blogToRemove.id))
+  //       dispatch(
+  //         setNotification(
+  //           `Blog ${blogToRemove.title} by ${blogToRemove.author} deleted`,
+  //           'positive',
+  //           5000
+  //         )
+  //       )
+  //     } catch (exception) {
+  //       console.error(exception)
+  //     }
+  //   }
+  // }
 
   if (user === null) {
     return (
@@ -164,14 +162,14 @@ const App = () => {
         </>
       ) : null}
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} />
+        {/* <BlogForm createBlog={addBlog} /> */}
       </Togglable>
       {blogs.map((blog, index) => (
         <Blog
           key={blog.id || index}
           blog={blog}
-          updateLikes={addLike}
-          removeBlog={removeBlog}
+          // updateLikes={addLike}
+          // removeBlog={removeBlog}
           user={user}
         />
       ))}
