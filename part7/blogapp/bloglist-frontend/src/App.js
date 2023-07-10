@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 // import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, setBlogs } from './reducers/blogsReducer'
+import { initializeBlogs, createBlog, setBlogs } from './reducers/blogsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
-  const blogs = useSelector((state) => state.blogs)
+  const { blogs } = useSelector((state) => state.blogs)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -18,8 +19,13 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(setBlogs(initializeBlogs()))
-  }, [blogs])
+    const fetchBlogs = async () => {
+      const blogs = await dispatch(initializeBlogs())
+      dispatch(setBlogs(blogs))
+    }
+
+    fetchBlogs()
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -89,12 +95,30 @@ const App = () => {
     </form>
   )
 
+  const handleCreateBlog = async (blogData) => {
+    blogFormRef.current.toggleVisibility()
+    try {
+      // const createdBlog = await blogService.create(newBlog)
+      // setBlogs([...blogs, createdBlog])
+      await dispatch(createBlog(blogData))
+      dispatch(
+        setNotification(
+          `a new blog ${blogData.title} by ${blogData.author} added`,
+          'positive',
+          5000
+        )
+      )
+    } catch (exception) {
+      dispatch(setNotification('Missing title or author', 'negative', 5000))
+    }
+  }
+
   // const addBlog = async (newBlog) => {
   //   blogFormRef.current.toggleVisibility()
-
   //   try {
   //     // const createdBlog = await blogService.create(newBlog)
   //     // setBlogs([...blogs, createdBlog])
+  //     dispatch(appendBlog(createBlog(newBlog)))
   //     dispatch(
   //       setNotification(
   //         `a new blog ${newBlog.title} by ${newBlog.author} added`,
@@ -162,7 +186,7 @@ const App = () => {
         </>
       ) : null}
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        {/* <BlogForm createBlog={addBlog} /> */}
+        <BlogForm createBlog={handleCreateBlog} />
       </Togglable>
       {blogs.map((blog, index) => (
         <Blog

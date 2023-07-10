@@ -10,6 +10,7 @@ const blogsSlice = createSlice({
   initialState, // Initial state object
   reducers: {
     appendBlog(state, action) {
+      console.log(action.payload)
       // Reducer for appending a new blog to the state
       state.blogs.push(action.payload) // Add the payload (new blog) to the blogs array
     },
@@ -37,7 +38,7 @@ const blogsSlice = createSlice({
   },
 })
 
-export const { appendBlog, setBlogs, likeBlog, deleteBlog } = blogsSlice.reducer // Exporting the reducer functions as named exports
+export const { appendBlog, setBlogs, likeBlog, deleteBlog } = blogsSlice.actions // Exporting the reducer functions as named exports
 
 export const initializeBlogs = () => {
   // Exporting an async action creator function
@@ -46,3 +47,14 @@ export const initializeBlogs = () => {
     return blogs
   }
 }
+
+export const createBlog = (blogData) => async (dispatch) => {
+  try {
+    const newBlog = await blogService.create(blogData)
+    dispatch(appendBlog(newBlog))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export default blogsSlice.reducer
