@@ -26,9 +26,7 @@ const blogsSlice = createSlice({
         ...blogToLike,
         likes: blogToLike.likes + 1, // Increment the likes count of the found blog
       }
-      return state.blogs.map((blog) => {
-        blog.id !== id ? blog : changedBlog // Return a new array with the updated blog
-      })
+      state.blogs = state.blogs.map((b) => (b.id === id ? changedBlog : b))
     },
     deleteBlog(state, action) {
       // Reducer for deleting a blog
@@ -48,10 +46,28 @@ export const initializeBlogs = () => {
   }
 }
 
-export const createBlog = (blogData) => async (dispatch) => {
+export const createNewBlog = (blogData) => async (dispatch) => {
   try {
     const newBlog = await blogService.create(blogData)
     dispatch(appendBlog(newBlog))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const likeSelectedBlog = (id, blogData) => async (dispatch) => {
+  try {
+    const returnedBlog = await blogService.update(id, blogData)
+    await dispatch(likeBlog(returnedBlog))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const deleteSelectedBlog = (blogData) => async (dispatch) => {
+  try {
+    await blogService.deleteBlog(blogData.id)
+    await dispatch(deleteBlog(blogData))
   } catch (error) {
     console.error(error)
   }
