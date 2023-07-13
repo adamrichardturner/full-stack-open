@@ -31,7 +31,7 @@ const blogsSlice = createSlice({
     deleteBlog(state, action) {
       // Reducer for deleting a blog
       const id = action.payload.id // Extract the ID of the blog to be deleted from the payload
-      return state.blogs.filter((b) => b.id !== id) // Return a new array without the deleted blog
+      state.blogs = state.blogs.filter((b) => b.id !== id) // Return a new array without the deleted blog
     },
   },
 })
