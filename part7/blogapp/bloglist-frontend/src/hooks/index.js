@@ -5,6 +5,7 @@ import {
   deleteSelectedBlog,
   likeSelectedBlog,
 } from '../reducers/blogsReducer'
+import { setLogin, logout } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 
 export const useBlogs = () => {
@@ -63,5 +64,34 @@ export const useBlogs = () => {
     createBlog,
     removeBlog,
     likeBlog,
+  }
+}
+
+export const useUser = () => {
+  const dispatch = useDispatch()
+
+  const loginUser = (username, password) => {
+    try {
+      dispatch(setLogin(username, password))
+      // dispatch(setNotification(`${user.name} logged in`, 'positive', 5000))
+      // window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+    } catch (error) {
+      console.error(error)
+      dispatch(setNotification('Wrong username or password', 'negative', 5000))
+    }
+  }
+
+  const logoutUser = () => {
+    try {
+      dispatch(logout())
+      window.localStorage.removeItem('loggedBlogappUser')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return {
+    loginUser,
+    logoutUser,
   }
 }

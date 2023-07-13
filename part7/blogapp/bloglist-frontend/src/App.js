@@ -1,20 +1,20 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import loginService from './services/login'
-import { setNotification } from './reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { useBlogs } from './hooks'
+import { useBlogs, useUser } from './hooks'
 import blogService from './services/blogs'
 import { setBlogs } from './reducers/blogsReducer'
+import { addUser } from './reducers/userReducer'
+
 const App = () => {
   const { blogs } = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user.user)
   const { getBlogs, createBlog, removeBlog, likeBlog } = useBlogs()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const { logoutUser } = useUser()
   const blogFormRef = useRef()
   const dispatch = useDispatch()
 
@@ -30,69 +30,10 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(addUser(user))
       blogService.setToken(user.token)
     }
   }, [])
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-      dispatch(setNotification(`${user.name} logged in`, 'positive', 5000))
-    } catch (exception) {
-      dispatch(setNotification('Wrong username or password', 'negative', 5000))
-    }
-  }
-
-  const handleLogout = (event) => {
-    event.preventDefault()
-    try {
-      window.localStorage.removeItem('loggedBlogappUser')
-      setUser(null)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      console.error(exception)
-    }
-  }
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          id="username"
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id="password"
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id="login-button" type="submit">
-        login
-      </button>
-    </form>
-  )
 
   const handleCreateBlog = (blogData) => {
     blogFormRef.current.toggleVisibility()
@@ -107,12 +48,16 @@ const App = () => {
     await removeBlog(blogToRemove)
   }
 
+  const handleLogout = () => {
+    logoutUser()
+  }
+
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
         <Notification />
-        {loginForm()}
+        <LoginForm />
       </div>
     )
   }
