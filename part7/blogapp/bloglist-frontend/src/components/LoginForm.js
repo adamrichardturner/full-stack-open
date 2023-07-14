@@ -5,10 +5,12 @@ const LoginForm = () => {
   const { loginUser } = useUser('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
   const handleLogin = async (event) => {
     event.preventDefault()
     loginUser(username, password)
   }
+
   return (
     <form onSubmit={handleLogin}>
       <div>
