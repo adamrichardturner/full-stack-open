@@ -5,9 +5,9 @@ import {
   deleteSelectedBlog,
   likeSelectedBlog,
 } from '../reducers/blogsReducer'
-import { setLogin, logout } from '../reducers/userReducer'
+import { setLogin, logout, getAllUsers } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
-
+import blogService from '../services/blogs'
 export const useBlogs = () => {
   const dispatch = useDispatch()
 
@@ -70,14 +70,25 @@ export const useBlogs = () => {
 export const useUser = () => {
   const dispatch = useDispatch()
 
-  const loginUser = (username, password) => {
+  const getAll = () => {
     try {
-      dispatch(setLogin(username, password))
-      // dispatch(setNotification(`${user.name} logged in`, 'positive', 5000))
-      // window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      dispatch(getAllUsers())
     } catch (error) {
       console.error(error)
-      dispatch(setNotification('Wrong username or password', 'negative', 5000))
+    }
+  }
+
+  const loginUser = async (username, password) => {
+    try {
+      const user = await dispatch(setLogin(username, password))
+      if (user) {
+        window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+        blogService.setToken(user.token)
+        console.log(user.name)
+        dispatch(setNotification(`${user.name} logged in`, 'positive', 5000))
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -93,5 +104,6 @@ export const useUser = () => {
   return {
     loginUser,
     logoutUser,
+    getAll,
   }
 }

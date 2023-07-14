@@ -12,7 +12,10 @@ import { addUser } from './reducers/userReducer'
 
 const App = () => {
   const { blogs } = useSelector((state) => state.blogs)
-  const user = useSelector((state) => state.user.user)
+  let loggedUser = useSelector((state) => state.user)
+  console.log(loggedUser)
+  const { user } = loggedUser
+  console.log(user)
   const { getBlogs, createBlog, removeBlog, likeBlog } = useBlogs()
   const { logoutUser } = useUser()
   const blogFormRef = useRef()
@@ -28,12 +31,14 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (!loggedUserJSON === undefined) {
-      const user = JSON.parse(loggedUserJSON)
+    if (loggedUserJSON) {
+      let user = JSON.parse(loggedUserJSON)
+      console.log(user)
       dispatch(addUser(user))
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [dispatch])
 
   const handleCreateBlog = (blogData) => {
     blogFormRef.current.toggleVisibility()
@@ -49,6 +54,7 @@ const App = () => {
   }
 
   const handleLogout = () => {
+    window.localStorage.removeItem('loggedBlogappUser')
     logoutUser()
   }
 
