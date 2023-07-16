@@ -39,10 +39,9 @@ const blogsSlice = createSlice({
 export const { appendBlog, setBlogs, likeBlog, deleteBlog } = blogsSlice.actions // Exporting the reducer functions as named exports
 
 export const initializeBlogs = () => {
-  // Exporting an async action creator function
-  return async () => {
+  return async (dispatch) => {
     const blogs = await blogService.getAll() // Fetching all blogs from the blog service module
-    return blogs
+    await dispatch(setBlogs(blogs))
   }
 }
 

@@ -1,9 +1,9 @@
 import axios from 'axios'
 const baseUrl = '/api/users'
 
-const getUsers = async () => {
-  const response = await axios.get(baseUrl)
-  return response.data
+const getUsers = () => {
+  const request = axios.get(baseUrl)
+  return request.then((res) => res.data)
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

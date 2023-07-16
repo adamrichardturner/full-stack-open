@@ -18,14 +18,13 @@ const userSlice = createSlice({
     logout(state) {
       state.user = null
     },
-    addAllUsers(state, action) {
-      const { users } = action.payload
-      state.allUsers = users
+    setUsers(state, action) {
+      state.allUsers = action.payload
     },
   },
 })
 
-export const { addUser, logout, addAllUsers } = userSlice.actions
+export const { addUser, logout, setUsers } = userSlice.actions
 
 export const setLogin = (username, password) => {
   return async (dispatch) => {
@@ -39,10 +38,10 @@ export const setLogin = (username, password) => {
   }
 }
 
-export const getAllUsers = () => {
+export const initializeUsers = () => {
   return async (dispatch) => {
     const users = await userService.getUsers()
-    dispatch(addAllUsers(users))
+    await dispatch(setUsers(users))
   }
 }
 

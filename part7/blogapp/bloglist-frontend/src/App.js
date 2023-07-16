@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import Blog from './components/Blog'
+import BlogsList from './components/BlogsList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
@@ -7,24 +7,20 @@ import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { useBlogs, useUser } from './hooks'
 import blogService from './services/blogs'
-import { setBlogs } from './reducers/blogsReducer'
 import { addUser } from './reducers/userReducer'
 
 const App = () => {
-  const { blogs } = useSelector((state) => state.blogs)
   let loggedUser = useSelector((state) => state.user)
-  console.log(loggedUser)
   const { user } = loggedUser
-  console.log(user)
-  const { getBlogs, createBlog, removeBlog, likeBlog } = useBlogs()
-  const { logoutUser } = useUser()
+  const { getBlogs, createBlog } = useBlogs()
+  const { logoutUser, getAll } = useUser()
   const blogFormRef = useRef()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const getLatest = async () => {
-      const blogs = await getBlogs()
-      dispatch(setBlogs(blogs))
+    const getLatest = () => {
+      getBlogs()
+      getAll()
     }
     getLatest()
   }, [])
@@ -40,22 +36,14 @@ const App = () => {
     }
   }, [dispatch])
 
-  const handleCreateBlog = (blogData) => {
-    blogFormRef.current.toggleVisibility()
-    createBlog(blogData)
-  }
-
-  const handleLike = async (id, updatedBlog) => {
-    await likeBlog(id, updatedBlog)
-  }
-
-  const handleRemove = async (blogToRemove) => {
-    await removeBlog(blogToRemove)
-  }
-
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     logoutUser()
+  }
+
+  const handleCreateBlog = (blogData) => {
+    blogFormRef.current.toggleVisibility()
+    createBlog(blogData)
   }
 
   if (user === null) {
@@ -81,15 +69,7 @@ const App = () => {
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm createBlog={handleCreateBlog} />
       </Togglable>
-      {blogs.map((blog, index) => (
-        <Blog
-          key={blog.id || index}
-          blog={blog}
-          updateLikes={handleLike}
-          removeBlog={handleRemove}
-          user={user}
-        />
-      ))}
+      <BlogsList />
     </div>
   )
 }

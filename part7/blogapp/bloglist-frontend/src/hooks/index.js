@@ -5,15 +5,19 @@ import {
   deleteSelectedBlog,
   likeSelectedBlog,
 } from '../reducers/blogsReducer'
-import { setLogin, logout, getAllUsers } from '../reducers/userReducer'
+import { setLogin, logout, initializeUsers } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
 export const useBlogs = () => {
   const dispatch = useDispatch()
 
-  const getBlogs = () => {
-    const latestBlogs = dispatch(initializeBlogs())
-    return latestBlogs
+  const getBlogs = async () => {
+    try {
+      const blogs = await dispatch(initializeBlogs())
+      console.log(blogs)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const createBlog = (blogData) => {
@@ -70,9 +74,9 @@ export const useBlogs = () => {
 export const useUser = () => {
   const dispatch = useDispatch()
 
-  const getAll = () => {
+  const getAll = async () => {
     try {
-      dispatch(getAllUsers())
+      await dispatch(initializeUsers())
     } catch (error) {
       console.error(error)
     }
