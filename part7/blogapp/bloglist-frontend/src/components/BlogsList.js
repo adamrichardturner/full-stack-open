@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
-import { useBlogs } from './hooks'
+import { useBlogs } from '../hooks'
 
 const BlogsList = () => {
   const { blogs } = useSelector((state) => state.blogs)
@@ -15,17 +15,25 @@ const BlogsList = () => {
     await removeBlog(blogToRemove)
   }
 
-  return blogs.map((blog, index) => {
+  const list = blogs.map((blog, index) => {
     return (
-      <Blog
-        key={blog.id || index}
-        blog={blog}
-        updateLikes={handleLike}
-        removeBlog={handleRemove}
-        user={user}
-      />
+      <>
+        <Blog
+          key={blog.id || index}
+          blog={blog}
+          updateLikes={handleLike}
+          removeBlog={handleRemove}
+          user={user}
+        />
+      </>
     )
   })
+  return (
+    <>
+      <h2>blogs</h2>
+      {list}
+    </>
+  )
 }
 
 export default BlogsList

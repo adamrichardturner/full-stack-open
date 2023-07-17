@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import BlogsList from './components/BlogsList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
+import UserSummary from './components/UserSummary'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,7 +30,6 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       let user = JSON.parse(loggedUserJSON)
-      console.log(user)
       dispatch(addUser(user))
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
@@ -58,7 +58,6 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
       <Notification />
       {user ? (
         <>
@@ -69,6 +68,7 @@ const App = () => {
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm createBlog={handleCreateBlog} />
       </Togglable>
+      <UserSummary />
       <BlogsList />
     </div>
   )
