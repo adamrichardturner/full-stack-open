@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-
+import { Link } from 'react-router-dom'
 const UserSummary = () => {
   const allUsers = useSelector((state) => state.user.allUsers)
   const summary = allUsers.map((user) => {
@@ -16,7 +16,7 @@ const UserSummary = () => {
             minWidth: 160,
           }}
         >
-          {user.name}
+          <Link to={`/users/${user.id}`}>{user.name}</Link>
         </div>
         <div>{user.blogs.length}</div>
       </div>
