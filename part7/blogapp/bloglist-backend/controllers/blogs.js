@@ -100,4 +100,18 @@ blogsRouter.put('/:id', async (request, response, next) => {
   }
 })
 
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+  const commentText = request.body.text
+  const blog = await Blog.findById(request.params.id)
+
+  try {
+    blog.comments.push({ text: commentText })
+    await blog.save()
+    response.status(201).json(blog)
+  } catch (error) {
+    response.status(500).json({ message: 'Internal server error' })
+    next(error)
+  }
+})
+
 module.exports = blogsRouter

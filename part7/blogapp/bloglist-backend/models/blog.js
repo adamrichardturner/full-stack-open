@@ -10,9 +10,17 @@ const blogSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  comments: {
+    type: [
+      {
+        text: String,
+      },
+    ],
+    default: [], // Set default value as an empty array
+  },
 })
 
-// Set a toJSON method to the blog schema to transform the object to plain JavaScript object
+// Set a toJSON method to transform the object
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
