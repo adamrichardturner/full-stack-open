@@ -4,6 +4,7 @@ import {
   createNewBlog,
   deleteSelectedBlog,
   likeSelectedBlog,
+  commentSelectedBlog,
 } from '../reducers/blogsReducer'
 import { setLogin, logout, initializeUsers } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
@@ -63,11 +64,20 @@ export const useBlogs = () => {
     }
   }
 
+  const addComment = async (id, obj) => {
+    try {
+      dispatch(commentSelectedBlog(id, obj))
+    } catch (exception) {
+      console.error(exception)
+    }
+  }
+
   return {
     getBlogs,
     createBlog,
     removeBlog,
     likeBlog,
+    addComment,
   }
 }
 

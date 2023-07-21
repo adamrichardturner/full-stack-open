@@ -101,11 +101,11 @@ blogsRouter.put('/:id', async (request, response, next) => {
 })
 
 blogsRouter.post('/:id/comments', async (request, response, next) => {
-  const commentText = request.body.text
+  const commentText = request.body
+  console.log(commentText)
   const blog = await Blog.findById(request.params.id)
-
   try {
-    blog.comments.push({ text: commentText })
+    blog.comments.push(commentText)
     await blog.save()
     response.status(201).json(blog)
   } catch (error) {

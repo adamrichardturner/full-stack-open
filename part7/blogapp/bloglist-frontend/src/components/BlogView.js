@@ -1,15 +1,28 @@
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useBlogs } from '../hooks'
 
 const BlogView = () => {
-  const { likeBlog } = useBlogs()
+  const { likeBlog, addComment } = useBlogs()
   const id = useParams().id
   const { blogs } = useSelector((state) => state.blogs)
+  console.log(blogs)
   const blog = blogs.find((b) => b.id === id)
 
   const handleLike = async () => {
     await likeBlog(id, blog)
+  }
+
+  const [comment, setComment] = useState('')
+
+  const handleComment = (event) => {
+    event.preventDefault()
+    const obj = {
+      id,
+      text: comment,
+    }
+    addComment(id, obj)
   }
 
   return (
@@ -26,9 +39,17 @@ const BlogView = () => {
       </button>
       <p>added by {blog.user.name}</p>
       <h2>comments</h2>
+      <form className="commentForm" onSubmit={handleComment}>
+        <input
+          type="text"
+          value={comment}
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <button type="submit">Comment</button>
+      </form>
       <ul>
         {blog.comments.map((comment, index) => (
-          <li key={index}>{comment.text}</li>
+          <li key={index}>{comment}</li>
         ))}
       </ul>
     </>

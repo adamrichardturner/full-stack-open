@@ -33,10 +33,24 @@ const blogsSlice = createSlice({
       const id = action.payload.id // Extract the ID of the blog to be deleted from the payload
       state.blogs = state.blogs.filter((b) => b.id !== id) // Return a new array without the deleted blog
     },
+    appendComment(state, action) {
+      const { id, text } = action.payload
+      const blogToComment = state.blogs.find((b) => b.id === id)
+      const updatedBlog = {
+        ...blogToComment,
+        comments: [...blogToComment.comments, text],
+      }
+
+      console.log(updatedBlog)
+
+      // Replace the blogToComment in the state.blogs array with the updatedBlog
+      state.blogs = state.blogs.map((b) => (b.id === id ? updatedBlog : b))
+    },
   },
 })
 
-export const { appendBlog, setBlogs, likeBlog, deleteBlog } = blogsSlice.actions // Exporting the reducer functions as named exports
+export const { appendBlog, setBlogs, likeBlog, deleteBlog, appendComment } =
+  blogsSlice.actions // Exporting the reducer functions as named exports
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
@@ -67,6 +81,16 @@ export const deleteSelectedBlog = (blogData) => async (dispatch) => {
   try {
     await blogService.deleteBlog(blogData.id)
     await dispatch(deleteBlog(blogData))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const commentSelectedBlog = (id, obj) => async (dispatch) => {
+  const { text } = obj
+  try {
+    await blogService.commentBlog(id, text)
+    await dispatch(appendComment({ id, text }))
   } catch (error) {
     console.error(error)
   }
