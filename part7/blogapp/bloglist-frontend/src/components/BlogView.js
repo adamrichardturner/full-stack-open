@@ -7,7 +7,11 @@ const BlogView = () => {
   const { likeBlog, addComment } = useBlogs()
   const id = useParams().id
   const { blogs } = useSelector((state) => state.blogs)
-  console.log(blogs)
+
+  if (blogs === undefined) {
+    return null
+  }
+
   const blog = blogs.find((b) => b.id === id)
 
   const handleLike = async () => {

@@ -11,6 +11,7 @@ import { useBlogs, useUser } from './hooks'
 import blogService from './services/blogs'
 import { addUser } from './reducers/userReducer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Container from '@mui/material/Container'
 
 const App = () => {
   let loggedUser = useSelector((state) => state.user)
@@ -39,20 +40,20 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
+      <Container maxWidth="sm">
         <h2>Log in to application</h2>
         <Notification />
         <LoginForm />
-      </div>
+      </Container>
     )
   }
 
   return (
-    <div>
+    <Container maxWidth="sm">
       <Router>
         <Navigation />
         <Notification />
-        <h1>Blog App</h1>
+        <h1 style={{ fontFamily: 'League Spartan' }}>Blog App</h1>
         <Routes>
           <Route path="/users/:id" element={<UserView />} />
           <Route path="/users" element={<UserSummary />} />
@@ -60,7 +61,7 @@ const App = () => {
           <Route path="/" element={<BlogsList />} />
         </Routes>
       </Router>
-    </div>
+    </Container>
   )
 }
 

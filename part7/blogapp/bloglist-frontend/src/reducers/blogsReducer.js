@@ -88,6 +88,7 @@ export const deleteSelectedBlog = (blogData) => async (dispatch) => {
 
 export const commentSelectedBlog = (id, obj) => async (dispatch) => {
   const { text } = obj
+  console.log(text)
   try {
     await blogService.commentBlog(id, text)
     await dispatch(appendComment({ id, text }))

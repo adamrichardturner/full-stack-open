@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useUser } from '../hooks'
+import { TextField } from '@mui/material'
 
 const LoginForm = () => {
   const { loginUser } = useUser('')
@@ -14,8 +15,12 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleLogin}>
       <div>
-        username
-        <input
+        <TextField
+          fullWidth
+          sx={{
+            marginBottom: 2,
+          }}
+          label="Username"
           id="username"
           type="text"
           value={username}
@@ -24,9 +29,9 @@ const LoginForm = () => {
         />
       </div>
       <div>
-        password
-        <input
-          id="password"
+        <TextField
+          fullWidth
+          label="Password"
           type="password"
           value={password}
           name="Password"
