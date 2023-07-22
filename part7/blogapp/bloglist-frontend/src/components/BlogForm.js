@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Button, TextField } from '@mui/material'
 
 const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({
@@ -24,14 +25,25 @@ const BlogForm = ({ createBlog }) => {
 
   return (
     <form onSubmit={addBlog}>
-      <div>
-        title:
-        <input
+      <h2>Create new Blog</h2>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <TextField
+          label="Blog Title"
+          variant="filled"
+          sx={{
+            marginBottom: 2,
+            marginRight: 2,
+            background: '#F5F5F5',
+            borderRadius: '5px',
+            width: '50%',
+          }}
           id="title"
           type="text"
-          value={newBlog.title}
-          name="Title"
-          placeholder="Title"
           onChange={({ target }) =>
             setNewBlog((prevState) => ({
               ...prevState,
@@ -39,15 +51,18 @@ const BlogForm = ({ createBlog }) => {
             }))
           }
         />
-      </div>
-      <div>
-        author:
-        <input
+        <TextField
+          label="Blog made by"
+          variant="filled"
+          sx={{
+            marginBottom: 2,
+            background: '#F5F5F5',
+            borderRadius: '5px',
+            width: '50%',
+          }}
           id="author"
-          type="text"
           value={newBlog.author}
           name="Author"
-          placeholder="Author"
           onChange={({ target }) =>
             setNewBlog((prevState) => ({
               ...prevState,
@@ -57,13 +72,20 @@ const BlogForm = ({ createBlog }) => {
         />
       </div>
       <div>
-        url:
-        <input
+        <TextField
+          label="Blog Summary:"
+          variant="filled"
+          fullWidth
+          multiline
+          sx={{
+            marginBottom: 2,
+            background: '#F5F5F5',
+            borderRadius: '5px',
+          }}
+          maxRows={10}
           id="url"
-          type="text"
           value={newBlog.url}
           name="Url"
-          placeholder="URL"
           onChange={({ target }) =>
             setNewBlog((prevState) => ({
               ...prevState,
@@ -72,9 +94,18 @@ const BlogForm = ({ createBlog }) => {
           }
         />
       </div>
-      <button id="add-blog" type="submit">
-        create
-      </button>
+      <Button
+        variant="contained"
+        id="add-blog"
+        type="submit"
+        sx={{
+          color: '#fff',
+          borderColor: '#fff',
+          padding: '6px 16px',
+        }}
+      >
+        Create Blog
+      </Button>
     </form>
   )
 }

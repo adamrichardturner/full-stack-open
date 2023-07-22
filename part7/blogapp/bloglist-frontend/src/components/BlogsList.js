@@ -39,11 +39,10 @@ const BlogsList = () => {
   })
   return (
     <>
-      <h2>blogs</h2>
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      {list}
+      <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <BlogForm createBlog={handleCreateBlog} />
       </Togglable>
-      {list}
     </>
   )
 }

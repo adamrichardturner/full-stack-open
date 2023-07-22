@@ -5,14 +5,13 @@ import BlogView from './components/BlogView'
 import LoginForm from './components/LoginForm'
 import UserSummary from './components/UserSummary'
 import UserView from './components/UserView'
-import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { useBlogs, useUser } from './hooks'
 import blogService from './services/blogs'
 import { addUser } from './reducers/userReducer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Container from '@mui/material/Container'
-
+import { Container } from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 const App = () => {
   let loggedUser = useSelector((state) => state.user)
   const { user } = loggedUser
@@ -39,29 +38,37 @@ const App = () => {
   }, [dispatch])
 
   if (user === null) {
-    return (
-      <Container maxWidth="sm">
-        <h2>Log in to application</h2>
-        <Notification />
-        <LoginForm />
-      </Container>
-    )
+    return <LoginForm />
   }
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#e79d19',
+      },
+      secondary: {
+        main: '#ffffff',
+      },
+      danger: {
+        main: '#DC3545',
+      },
+    },
+  })
+
   return (
-    <Container maxWidth="sm">
-      <Router>
-        <Navigation />
-        <Notification />
-        <h1 style={{ fontFamily: 'League Spartan' }}>Blog App</h1>
-        <Routes>
-          <Route path="/users/:id" element={<UserView />} />
-          <Route path="/users" element={<UserSummary />} />
-          <Route path="/blogs/:id" element={<BlogView />} />
-          <Route path="/" element={<BlogsList />} />
-        </Routes>
-      </Router>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="md">
+        <Router>
+          <Navigation />
+          <Routes>
+            <Route path="/users/:id" element={<UserView />} />
+            <Route path="/users" element={<UserSummary />} />
+            <Route path="/blogs/:id" element={<BlogView />} />
+            <Route path="/" element={<BlogsList />} />
+          </Routes>
+        </Router>
+      </Container>
+    </ThemeProvider>
   )
 }
 

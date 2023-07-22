@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from '@mui/material'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 
 const Blog = ({ blog, updateLikes, removeBlog, user }) => {
   const [visible, setVisible] = useState(false)
@@ -7,14 +9,17 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
     setVisible(!visible)
   }
 
-  const showWhenVisible = { display: visible ? '' : 'none' }
+  const showWhenVisible = {
+    display: visible ? 'flex' : 'none',
+  }
 
   const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
+    position: 'static',
+    padding: 15,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5,
+    marginTop: 20,
+    borderRadius: '5px',
   }
 
   const updatedBlog = {
@@ -37,30 +42,101 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
     <div className="blog" style={blogStyle}>
       <div className="blog-details">
         <Link to={`/blogs/${blog.id}`}>
-          {blog.title} {blog.author}
+          <span
+            style={{
+              fontSize: '1.75rem',
+            }}
+          >
+            {blog.title}
+          </span>
         </Link>
+        <p style={{ fontWeight: '800', fontStyle: 'italic', marginBottom: 20 }}>
+          {' '}
+          Blog made by {blog.author}
+        </p>
+        <p>{blog.url}</p>
+        <p>
+          User: <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link>
+        </p>
       </div>
       <div style={showWhenVisible} className="blog-extra-details">
-        {blog.url}
-        <br />
-        likes {blog.likes}&nbsp;
-        <button id="add-like" onClick={addNewLike}>
-          like
-        </button>
-        <br />
-        {blog.user.name}
+        {blog.comments.map((comment, index) => (
+          <li key={index}>{comment}</li>
+        ))}
       </div>
-      <div>
-        <button id="toggle-details" onClick={toggleDetails}>
-          {visible ? 'hide' : 'view'}
-        </button>
-      </div>
-      <div>
-        {user.name === blog.user.name ? (
-          <button id="remove-blog" onClick={deleteBlog}>
-            remove
-          </button>
-        ) : null}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          padding: 5,
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <a
+            onClick={toggleDetails}
+            style={{
+              fontSize: 16,
+              textDecoration: 'underline',
+              cursor: 'pointer',
+            }}
+          >
+            {blog.comments.length > 0
+              ? visible
+                ? 'Hide'
+                : 'View Comments'
+              : null}
+          </a>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {blog.likes}
+            <FavoriteIcon
+              id="add-like"
+              onClick={addNewLike}
+              sx={{
+                color: '#fff',
+                borderColor: '#fff',
+                fontSize: 26,
+                cursor: 'pointer',
+              }}
+            />
+          </div>
+          <div>
+            {user.name === blog.user.name ? (
+              <Button
+                variant="contained"
+                id="remove-blog"
+                onClick={deleteBlog}
+                color="danger"
+                sx={{
+                  color: '#fff',
+                  borderColor: '#fff',
+                  marginLeft: 1,
+                  padding: '6px 16px',
+                }}
+              >
+                Remove
+              </Button>
+            ) : null}
+          </div>
+        </div>
       </div>
     </div>
   )
