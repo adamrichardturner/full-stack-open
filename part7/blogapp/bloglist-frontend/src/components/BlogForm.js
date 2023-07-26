@@ -24,23 +24,34 @@ const BlogForm = ({ createBlog }) => {
   }
 
   return (
-    <form onSubmit={addBlog}>
-      <h2>Create new Blog</h2>
+    <form
+      onSubmit={addBlog}
+      style={{
+        marginTop: 15,
+      }}
+    >
+      <h2
+        style={{
+          paddingBottom: 5,
+        }}
+      >
+        Create new Blog
+      </h2>
       <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
         }}
       >
         <TextField
           label="Blog Title"
           variant="filled"
+          fullWidth
           sx={{
             marginBottom: 2,
             marginRight: 2,
             background: '#F5F5F5',
             borderRadius: '5px',
-            width: '50%',
           }}
           id="title"
           type="text"
@@ -54,11 +65,11 @@ const BlogForm = ({ createBlog }) => {
         <TextField
           label="Blog made by"
           variant="filled"
+          fullWidth
           sx={{
             marginBottom: 2,
             background: '#F5F5F5',
             borderRadius: '5px',
-            width: '50%',
           }}
           id="author"
           value={newBlog.author}
@@ -82,7 +93,7 @@ const BlogForm = ({ createBlog }) => {
             background: '#F5F5F5',
             borderRadius: '5px',
           }}
-          maxRows={10}
+          minRows={5}
           id="url"
           value={newBlog.url}
           name="Url"

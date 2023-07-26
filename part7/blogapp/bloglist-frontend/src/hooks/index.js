@@ -21,6 +21,16 @@ export const useBlogs = () => {
     }
   }
 
+  const getBlog = async (id) => {
+    try {
+      const blogs = await dispatch(initializeBlogs())
+      const blog = blogs.find((b) => b.id === id)
+      return blog
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const createBlog = (blogData) => {
     try {
       dispatch(createNewBlog(blogData))
@@ -74,6 +84,7 @@ export const useBlogs = () => {
 
   return {
     getBlogs,
+    getBlog,
     createBlog,
     removeBlog,
     likeBlog,

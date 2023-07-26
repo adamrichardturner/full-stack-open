@@ -12,6 +12,8 @@ import { addUser } from './reducers/userReducer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Container } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Footer from './components/Footer'
+
 const App = () => {
   let loggedUser = useSelector((state) => state.user)
   const { user } = loggedUser
@@ -66,6 +68,7 @@ const App = () => {
             <Route path="/blogs/:id" element={<BlogView />} />
             <Route path="/" element={<BlogsList />} />
           </Routes>
+          <Footer />
         </Router>
       </Container>
     </ThemeProvider>

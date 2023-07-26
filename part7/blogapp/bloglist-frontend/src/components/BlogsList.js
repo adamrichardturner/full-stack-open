@@ -4,6 +4,7 @@ import Togglable from './Togglable'
 import BlogForm from './BlogForm'
 import Blog from './Blog'
 import { useBlogs } from '../hooks'
+import Loading from './Loading'
 
 const BlogsList = () => {
   const { blogs } = useSelector((state) => state.blogs)
@@ -24,6 +25,12 @@ const BlogsList = () => {
     createBlog(blogData)
   }
 
+  const loadingStyle = {
+    minHeight: '75vh',
+    display: 'flex',
+    alignItems: 'center',
+  }
+
   const list = blogs.map((blog, index) => {
     return (
       <>
@@ -37,13 +44,16 @@ const BlogsList = () => {
       </>
     )
   })
+
+  const isLoaded = blogs.length > 0
+
   return (
-    <>
-      {list}
+    <div style={isLoaded ? {} : loadingStyle}>
+      {isLoaded ? list : <Loading />}
       <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <BlogForm createBlog={handleCreateBlog} />
       </Togglable>
-    </>
+    </div>
   )
 }
 

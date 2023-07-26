@@ -45,6 +45,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
           <span
             style={{
               fontSize: '1.75rem',
+              lineHeight: '1.95rem',
             }}
           >
             {blog.title}
@@ -82,7 +83,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
           <a
             onClick={toggleDetails}
             style={{
-              fontSize: 16,
+              fontSize: 14,
               textDecoration: 'underline',
               cursor: 'pointer',
             }}
@@ -115,6 +116,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
                 borderColor: '#fff',
                 fontSize: 26,
                 cursor: 'pointer',
+                paddingLeft: '3px',
               }}
             />
           </div>
@@ -129,7 +131,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
                   color: '#fff',
                   borderColor: '#fff',
                   marginLeft: 1,
-                  padding: '6px 16px',
+                  padding: '6px 10px',
                 }}
               >
                 Remove

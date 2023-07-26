@@ -2,23 +2,34 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useBlogs } from '../hooks'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import { Button } from '@mui/material'
 
 const BlogView = () => {
-  const { likeBlog, addComment } = useBlogs()
+  const { likeBlog, addComment, removeBlog } = useBlogs()
   const id = useParams().id
   const { blogs } = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
+  const [visible, setVisible] = useState(false)
+  const [comment, setComment] = useState('')
 
-  if (blogs === undefined) {
-    return null
+  const toggleDetails = () => {
+    setVisible(!visible)
   }
 
   const blog = blogs.find((b) => b.id === id)
+
+  if (!blog) {
+    return null
+  }
 
   const handleLike = async () => {
     await likeBlog(id, blog)
   }
 
-  const [comment, setComment] = useState('')
+  const handleDelete = () => {
+    removeBlog(blog)
+  }
 
   const handleComment = (event) => {
     event.preventDefault()
@@ -31,18 +42,97 @@ const BlogView = () => {
 
   return (
     <>
-      <h2>{blog.title}</h2>
-      <p>
-        <a href={blog.url} target="_blank" rel="noreferrer">
-          {blog.url}
-        </a>
+      <h2
+        style={{
+          fontSize: '3rem',
+          lineHeight: '3.2rem',
+          marginTop: 15,
+        }}
+      >
+        {blog.title}
+      </h2>
+      <p
+        style={{
+          fontSize: '1.25rem',
+        }}
+      >
+        {blog.url}
       </p>
-      <div>{blog.likes} likes</div>
-      <button id="add-like" onClick={handleLike}>
-        like
-      </button>
-      <p>added by {blog.user.name}</p>
-      <h2>comments</h2>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          padding: 5,
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <a
+            onClick={toggleDetails}
+            style={{
+              fontSize: 14,
+              textDecoration: 'underline',
+              cursor: 'pointer',
+            }}
+          >
+            {blog.comments.length > 0
+              ? visible
+                ? 'Hide'
+                : 'View Comments'
+              : null}
+          </a>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {blog.likes}
+            <FavoriteIcon
+              id="add-like"
+              onClick={handleLike}
+              sx={{
+                color: '#fff',
+                borderColor: '#fff',
+                fontSize: 26,
+                cursor: 'pointer',
+                paddingLeft: '3px',
+              }}
+            />
+          </div>
+          <div>
+            {user.name === blog.user.name ? (
+              <Button
+                variant="contained"
+                id="remove-blog"
+                onClick={handleDelete}
+                color="danger"
+                sx={{
+                  color: '#fff',
+                  borderColor: '#fff',
+                  marginLeft: 1,
+                  padding: '6px 10px',
+                }}
+              >
+                Remove
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      </div>
       <form className="commentForm" onSubmit={handleComment}>
         <input
           type="text"
