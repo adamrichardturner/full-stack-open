@@ -1,3 +1,5 @@
+/* Your other CSS styles here */
+
 * {
   margin: 0;
   padding: 0;
@@ -9,8 +11,6 @@ html {
 }
 
 body {
-  background: #33332d;
-  color: #fff;
   font-family: 'Poppins', sans-serif;
 }
 

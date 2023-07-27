@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Button } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
+import { Button, Typography, Link as MuiLink } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
 const Blog = ({ blog, updateLikes, removeBlog, user }) => {
@@ -41,24 +41,27 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
   return (
     <div className="blog" style={blogStyle}>
       <div className="blog-details">
-        <Link to={`/blogs/${blog.id}`}>
+        <MuiLink component={RouterLink} to={`/blogs/${blog.id}`}>
           <span
             style={{
               fontSize: '1.75rem',
               lineHeight: '1.95rem',
+              textDecoration: 'none',
             }}
           >
             {blog.title}
           </span>
-        </Link>
-        <p style={{ fontWeight: '800', fontStyle: 'italic', marginBottom: 20 }}>
-          {' '}
-          Blog made by {blog.author}
-        </p>
-        <p>{blog.url}</p>
-        <p>
-          User: <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link>
-        </p>
+        </MuiLink>
+        <Typography variant="paragraphHeader">
+          <p>Blog made by {blog.author}</p>
+        </Typography>
+        <Typography variant="paragraph">
+          <p>{blog.url}</p>
+        </Typography>
+        User:{' '}
+        <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
+          {blog.user.name}
+        </MuiLink>
       </div>
       <div style={showWhenVisible} className="blog-extra-details">
         {blog.comments.map((comment, index) => (
@@ -111,8 +114,8 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
             <FavoriteIcon
               id="add-like"
               onClick={addNewLike}
+              color="danger"
               sx={{
-                color: '#fff',
                 borderColor: '#fff',
                 fontSize: 26,
                 cursor: 'pointer',
@@ -126,7 +129,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
                 variant="contained"
                 id="remove-blog"
                 onClick={deleteBlog}
-                color="danger"
+                color="primary"
                 sx={{
                   color: '#fff',
                   borderColor: '#fff',

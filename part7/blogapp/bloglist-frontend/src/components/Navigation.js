@@ -1,11 +1,16 @@
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useUser } from '../hooks'
-import logo from '../blogz.png'
-import { Button } from '@mui/material'
+import { Button, Typography, Link as MuiLink } from '@mui/material'
 import Notification from './Notification'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Switch from '@mui/material/Switch'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import { useMediaQuery } from '@mui/material'
+import LightbulbIcon from '@mui/icons-material/Lightbulb'
 
-const Navigation = () => {
+const Navigation = ({ handleThemeChange, isDark, theme }) => {
   const { user } = useSelector((state) => state.user)
   const { logoutUser } = useUser()
 
@@ -13,6 +18,12 @@ const Navigation = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     logoutUser()
   }
+
+  const handleChange = () => {
+    handleThemeChange()
+  }
+
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
   const styles = {
     display: 'flex',
@@ -23,8 +34,10 @@ const Navigation = () => {
     paddingBottom: 10,
   }
 
+  const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
+
   return (
-    <>
+    <div style={{ color: iconColor }}>
       <div
         style={{
           minHeight: '70px',
@@ -37,28 +50,23 @@ const Navigation = () => {
           <div
             style={{
               display: 'flex',
+              alignItems: 'center',
             }}
           >
-            <h1
+            <Typography variant="h1">Blogz</Typography>
+            <AssignmentIcon
               style={{
-                fontSize: '4rem',
-              }}
-            >
-              Blogz
-            </h1>
-            <img
-              src={logo}
-              alt="Blogz"
-              style={{
-                width: '60px',
-                alignSelf: 'center',
+                color: iconColor,
+                fontSize: isSmallScreen ? '2rem' : '3.5rem',
               }}
             />
           </div>
-          <Link to="/" style={{ marginRight: 15 }}>
+          <MuiLink component={RouterLink} to="/" style={{ marginRight: 15 }}>
             Posts
-          </Link>
-          <Link to="/users">Users</Link>
+          </MuiLink>
+          <MuiLink component={RouterLink} to="/users">
+            Users
+          </MuiLink>
         </div>
         <div>
           {user ? (
@@ -69,6 +77,7 @@ const Navigation = () => {
                     style={{
                       fontWeight: '600',
                       fontSize: '1.5rem',
+                      color: '#e79d19',
                     }}
                     className="login-user"
                   >
@@ -103,12 +112,40 @@ const Navigation = () => {
                     Logout
                   </Button>
                 </div>
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    <FormGroup
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginRight: 0,
+                        flexDirection: 'row',
+                      }}
+                    >
+                      <FormControlLabel
+                        control={<Switch defaultChecked={isDark} />}
+                        onChange={handleChange}
+                        sx={{
+                          marginRight: 0,
+                        }}
+                      />
+                      <LightbulbIcon />
+                    </FormGroup>
+                  </div>
+                  <div></div>
+                </div>
               </div>
             </>
           ) : null}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

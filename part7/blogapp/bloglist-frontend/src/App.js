@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Navigation from './components/Navigation'
 import BlogsList from './components/BlogsList'
 import BlogView from './components/BlogView'
@@ -11,8 +11,10 @@ import blogService from './services/blogs'
 import { addUser } from './reducers/userReducer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Container } from '@mui/material'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { ThemeProvider } from '@mui/material/styles'
 import Footer from './components/Footer'
+import { lightTheme } from './theme/lightTheme'
+import { darkTheme } from './theme/darkTheme'
 
 const App = () => {
   let loggedUser = useSelector((state) => state.user)
@@ -20,6 +22,27 @@ const App = () => {
   const { getBlogs } = useBlogs()
   const { getAll } = useUser()
   const dispatch = useDispatch()
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Get the mode from localStorage, or use true if not found
+    const storedMode = JSON.parse(localStorage.getItem('isDarkMode'))
+    return storedMode !== null ? storedMode : false
+  })
+
+  const theme = isDarkMode ? darkTheme : lightTheme
+
+  const handleThemeChange = () => {
+    const newMode = !isDarkMode
+    setIsDarkMode(newMode)
+    // Store the updated mode in localStorage
+    localStorage.setItem('isDarkMode', JSON.stringify(newMode))
+  }
+
+  useEffect(() => {
+    console.log(isDarkMode)
+    const bodyBackground = isDarkMode ? '#33332d' : '#fff'
+    document.body.style.backgroundColor = bodyBackground
+  }, [isDarkMode])
 
   useEffect(() => {
     const getLatest = () => {
@@ -43,25 +66,15 @@ const App = () => {
     return <LoginForm />
   }
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#e79d19',
-      },
-      secondary: {
-        main: '#ffffff',
-      },
-      danger: {
-        main: '#DC3545',
-      },
-    },
-  })
-
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
         <Router>
-          <Navigation />
+          <Navigation
+            handleThemeChange={handleThemeChange}
+            isDark={isDarkMode}
+            theme={theme}
+          />
           <Routes>
             <Route path="/users/:id" element={<UserView />} />
             <Route path="/users" element={<UserSummary />} />
