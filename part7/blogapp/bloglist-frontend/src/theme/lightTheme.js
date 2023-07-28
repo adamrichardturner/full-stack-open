@@ -31,7 +31,7 @@ export const lightTheme = createTheme({
       main: '#4BB543',
     },
     text: {
-      main: '#000000',
+      primary: '#000000',
     },
   },
   typography: {
@@ -54,6 +54,12 @@ export const lightTheme = createTheme({
     h1: {
       color: '#000000',
       fontFamily: 'League Spartan, sans-serif',
+      margin: 0,
+      padding: 0,
+      marginRight: '10px',
+    },
+    h2: {
+      color: '#000000',
       margin: 0,
       padding: 0,
       marginRight: '10px',
@@ -87,6 +93,23 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           color: '#000000',
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          borderBottom: '1px solid black',
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          title: {
+            color: (theme) => theme.palette.primary.main,
+          },
+          border: '2px solid #e79d19',
         },
       },
     },

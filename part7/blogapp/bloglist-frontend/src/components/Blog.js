@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Button, Typography, Link as MuiLink } from '@mui/material'
+import { Box, Button, Typography, Link as MuiLink } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
 const Blog = ({ blog, updateLikes, removeBlog, user }) => {
@@ -11,15 +11,6 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
 
   const showWhenVisible = {
     display: visible ? 'flex' : 'none',
-  }
-
-  const blogStyle = {
-    position: 'static',
-    padding: 15,
-    border: 'solid',
-    borderWidth: 1,
-    marginTop: 20,
-    borderRadius: '5px',
   }
 
   const updatedBlog = {
@@ -39,7 +30,13 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
   }
 
   return (
-    <div className="blog" style={blogStyle}>
+    <Box
+      border={1}
+      borderColor="text.primary"
+      p={2}
+      marginTop={2}
+      borderRadius={2}
+    >
       <div className="blog-details">
         <MuiLink component={RouterLink} to={`/blogs/${blog.id}`}>
           <span
@@ -58,7 +55,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
         <Typography variant="paragraph">
           <p>{blog.url}</p>
         </Typography>
-        User:{' '}
+        <Typography variant="paragraph">User: </Typography>
         <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
           {blog.user.name}
         </MuiLink>
@@ -91,11 +88,18 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
               cursor: 'pointer',
             }}
           >
-            {blog.comments.length > 0
-              ? visible
-                ? 'Hide'
-                : 'View Comments'
-              : null}
+            <Typography
+              variant="paragraph"
+              sx={{
+                textDecoration: 'underline',
+              }}
+            >
+              {blog.comments.length > 0
+                ? visible
+                  ? 'Hide'
+                  : 'View Comments'
+                : null}
+            </Typography>
           </a>
         </div>
         <div
@@ -110,7 +114,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
               alignItems: 'center',
             }}
           >
-            {blog.likes}
+            <Typography variant="paragraph">{blog.likes}</Typography>
             <FavoriteIcon
               id="add-like"
               onClick={addNewLike}
@@ -143,7 +147,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Box>
   )
 }
 

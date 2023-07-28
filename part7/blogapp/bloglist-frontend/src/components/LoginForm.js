@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { useUser } from '../hooks'
 import Notification from './Notification'
 import { Container, TextField, Button } from '@mui/material'
-import logo from '../blogz.png'
+import { Typography, useMediaQuery } from '@mui/material'
+import AssignmentIcon from '@mui/icons-material/Assignment'
 
-const LoginForm = () => {
+const LoginForm = ({ theme }) => {
   const { loginUser } = useUser('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -13,6 +14,10 @@ const LoginForm = () => {
     event.preventDefault()
     loginUser(username, password)
   }
+
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
+
+  const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
 
   return (
     <>
@@ -31,21 +36,14 @@ const LoginForm = () => {
           style={{
             display: 'flex',
             marginBottom: 10,
+            alignItems: 'center',
           }}
         >
-          <h1
+          <Typography variant="h1">Blogz</Typography>
+          <AssignmentIcon
             style={{
-              fontSize: '6rem',
-            }}
-          >
-            Blogz
-          </h1>
-          <img
-            src={logo}
-            alt="Blogz"
-            style={{
-              width: '60px',
-              alignSelf: 'center',
+              color: iconColor,
+              fontSize: isSmallScreen ? '2rem' : '3.5rem',
             }}
           />
         </div>
@@ -87,10 +85,13 @@ const LoginForm = () => {
             id="login-button"
             variant="contained"
             type="submit"
+            color="primary"
             sx={{
-              color: '#000',
-              borderColor: '#000',
-              backgroundColor: '#fff',
+              color: '#fff',
+              borderColor: '#fff',
+              padding: '16px 16px',
+              width: '100%',
+              borderRadius: '5px',
             }}
           >
             Login

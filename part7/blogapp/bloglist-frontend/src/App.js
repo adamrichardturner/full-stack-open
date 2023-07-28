@@ -63,7 +63,11 @@ const App = () => {
   }, [dispatch])
 
   if (user === null) {
-    return <LoginForm />
+    return (
+      <ThemeProvider theme={theme}>
+        <LoginForm theme={theme} />
+      </ThemeProvider>
+    )
   }
 
   return (

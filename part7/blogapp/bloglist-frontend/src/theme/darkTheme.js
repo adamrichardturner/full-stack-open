@@ -21,6 +21,9 @@ export const darkTheme = createTheme({
     background: {
       main: '#33332d',
     },
+    dark: {
+      main: '#000000',
+    },
     danger: {
       main: '#DC3545',
     },
@@ -31,7 +34,7 @@ export const darkTheme = createTheme({
       main: '#4BB543',
     },
     text: {
-      main: '#fff',
+      primary: '#fff',
     },
   },
   typography: {
@@ -54,6 +57,12 @@ export const darkTheme = createTheme({
     h1: {
       color: '#ffffff',
       fontFamily: 'League Spartan, sans-serif',
+      margin: 0,
+      padding: 0,
+      marginRight: '10px',
+    },
+    h2: {
+      color: '#ffffff',
       margin: 0,
       padding: 0,
       marginRight: '10px',
@@ -100,6 +109,25 @@ export const darkTheme = createTheme({
             textDecoration: 'underline', // Add underline on hover
           },
           // Add any other specific styles you want for the Link component
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          background: 'black',
+          opacity: '0.4',
+          borderBottom: '1px solid white',
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          title: {
+            color: (theme) => theme.palette.primary.main,
+          },
+          border: '2px solid #e79d19',
         },
       },
     },

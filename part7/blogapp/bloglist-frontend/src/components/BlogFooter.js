@@ -1,7 +1,14 @@
 import { useState } from 'react'
 import { useBlogs } from '../hooks'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import { Button, TextField } from '@mui/material'
+import {
+  Button,
+  TextField,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material'
 
 const BlogFooter = ({ blog, user }) => {
   const { id } = blog
@@ -39,12 +46,12 @@ const BlogFooter = ({ blog, user }) => {
             alignItems: 'center',
           }}
         >
-          {blog.likes}
+          <Typography variant="paragraph">{blog.likes}</Typography>
           <FavoriteIcon
             id="add-like"
             onClick={handleLike}
+            color="danger"
             sx={{
-              color: '#fff',
               borderColor: '#fff',
               fontSize: 26,
               cursor: 'pointer',
@@ -71,13 +78,17 @@ const BlogFooter = ({ blog, user }) => {
           ) : null}
         </div>
       </div>
-      <div>
+      <div
+        style={{
+          marginTop: '2rem',
+        }}
+      >
         <form
           className="commentForm"
           onSubmit={handleComment}
           style={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'column',
             alignItems: 'flex-start',
             justifySelf: 'flex-start',
           }}
@@ -86,12 +97,10 @@ const BlogFooter = ({ blog, user }) => {
             label="Leave a comment"
             variant="filled"
             id="comment"
+            fullWidth
             name="comment"
             value={comment}
             onChange={({ target }) => setComment(target.value)}
-            sx={{
-              width: '90%',
-            }}
           />
           <Button
             type="submit"
@@ -100,22 +109,29 @@ const BlogFooter = ({ blog, user }) => {
             onClick={handleComment}
             color="primary"
             sx={{
-              border: '1px solid #000',
-              height: '3.5rem',
               color: '#fff',
-              '&:hover': {
-                backgroundColor: 'var(--tertiary-main)', // Replace with your desired hover background color
-              },
+              borderColor: '#fff',
+              padding: '16px 16px',
+              width: '100%',
+              borderRadius: '5px',
             }}
           >
             Comment
           </Button>
         </form>
-        <ul>
+        <List
+          style={{
+            paddingTop: '2rem',
+          }}
+        >
           {blog.comments.map((comment, index) => (
-            <li key={index}>{comment}</li>
+            <Typography variant="paragraph" key={index}>
+              <ListItem>
+                <ListItemText>{comment}</ListItemText>
+              </ListItem>
+            </Typography>
           ))}
-        </ul>
+        </List>
       </div>
     </div>
   )

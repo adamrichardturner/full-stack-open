@@ -34,14 +34,8 @@ const Notification = () => {
 
   return (
     <>
-      <Alert
-        severity={alertStyle}
-        style={{
-          fontSize: '1.75rem',
-          fontWeight: '600',
-        }}
-      >
-        <AlertTitle>{message}</AlertTitle>
+      <Alert variant="outlined" severity={alertStyle} color="">
+        <AlertTitle color="primary">{message}</AlertTitle>
       </Alert>
     </>
   )

@@ -1,3 +1,5 @@
+import { Typography } from '@mui/material'
+
 const Footer = () => {
   return (
     <footer
@@ -9,7 +11,7 @@ const Footer = () => {
       }}
     >
       <p>
-        Blogz | Made by{' '}
+        <Typography variant="paragraph">Blogz | Made by </Typography>
         <a
           href="https://adamrichardturner.dev"
           target="_blank"
