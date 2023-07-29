@@ -31,6 +31,9 @@ mongoose
 // Setting up CORS middleware
 app.use(cors())
 
+// Run static build if present
+app.use(express.static('build'))
+
 // Parsing JSON data with Express
 app.use(express.json())
 
