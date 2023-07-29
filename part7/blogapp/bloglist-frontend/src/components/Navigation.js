@@ -2,7 +2,6 @@ import { Link as RouterLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useUser } from '../hooks'
 import { Button, Typography, Link as MuiLink } from '@mui/material'
-import Notification from './Notification'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
@@ -32,19 +31,13 @@ const Navigation = ({ handleThemeChange, isDark, theme }) => {
     justifyContent: 'space-between',
     borderBottom: '1px solid #fff',
     paddingBottom: 10,
+    marginTop: '1rem',
   }
 
   const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
 
   return (
     <div style={{ color: iconColor }}>
-      <div
-        style={{
-          minHeight: '70px',
-        }}
-      >
-        <Notification />
-      </div>
       <div style={styles}>
         <div>
           <div

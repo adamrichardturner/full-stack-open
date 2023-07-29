@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
-import { Alert, AlertTitle } from '@mui/material'
+import { Alert, AlertTitle, Box } from '@mui/material'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import './Notification.css'
+import { useMediaQuery } from '@mui/material'
 
 const Notification = () => {
   const dispatch = useDispatch()
@@ -10,9 +13,26 @@ const Notification = () => {
   const type = useSelector((state) => state.notification.type)
   const timeout = useSelector((state) => state.notification.timeout)
 
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
+
+  function truncateString(s) {
+    if (s.length <= 120) {
+      return s
+    } else {
+      return s.slice(0, 120)
+    }
+  }
+
+  const [visible, setVisible] = useState(false) // State to control the visibility of the notification
+
   useEffect(() => {
     if (message) {
+      // Show the notification
+      setVisible(true)
+
+      // Set a timer to hide the notification after the specified timeout
       const timer = setTimeout(() => {
+        setVisible(false)
         dispatch(setNotification('', '', 0))
       }, timeout)
 
@@ -27,17 +47,25 @@ const Notification = () => {
   let alertStyle
   // Depending on the notification type, change the style
   if (type === 'positive') {
-    alertStyle = 'success'
+    alertStyle = 'warning'
   } else if (type === 'negative') {
     alertStyle = 'error'
   }
 
   return (
-    <>
-      <Alert variant="outlined" severity={alertStyle} color="">
-        <AlertTitle color="primary">{message}</AlertTitle>
+    <Box className={`notification ${visible ? 'notification-show' : ''}`}>
+      {/* Add 'notification-show' class when 'visible' is true */}
+      <Alert
+        severity={alertStyle}
+        sx={{
+          width: isSmallScreen ? '100%' : '40vw',
+        }}
+        icon={<AssignmentIcon color="primary" />}
+      >
+        <AlertTitle color="primary">Success!</AlertTitle>
+        {truncateString(message)}
       </Alert>
-    </>
+    </Box>
   )
 }
 

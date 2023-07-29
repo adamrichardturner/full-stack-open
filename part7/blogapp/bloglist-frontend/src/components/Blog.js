@@ -53,7 +53,13 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
           <p>Blog made by {blog.author}</p>
         </Typography>
         <Typography variant="paragraph">
-          <p>{blog.url}</p>
+          <p
+            style={{
+              marginTop: '1rem',
+            }}
+          >
+            {blog.url}
+          </p>
         </Typography>
         <Typography variant="paragraph">User: </Typography>
         <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>

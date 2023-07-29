@@ -15,6 +15,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import Footer from './components/Footer'
 import { lightTheme } from './theme/lightTheme'
 import { darkTheme } from './theme/darkTheme'
+import Notification from './components/Notification'
 
 const App = () => {
   let loggedUser = useSelector((state) => state.user)
@@ -39,7 +40,6 @@ const App = () => {
   }
 
   useEffect(() => {
-    console.log(isDarkMode)
     const bodyBackground = isDarkMode ? '#33332d' : '#fff'
     document.body.style.backgroundColor = bodyBackground
   }, [isDarkMode])
@@ -72,6 +72,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Notification />
       <Container maxWidth="md">
         <Router>
           <Navigation

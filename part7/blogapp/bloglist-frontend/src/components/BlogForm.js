@@ -47,12 +47,6 @@ const BlogForm = ({ createBlog }) => {
           label="Blog Title"
           variant="filled"
           fullWidth
-          sx={{
-            marginBottom: 2,
-            marginRight: 2,
-            background: '#F5F5F5',
-            borderRadius: '5px',
-          }}
           id="title"
           type="text"
           onChange={({ target }) =>
@@ -66,11 +60,6 @@ const BlogForm = ({ createBlog }) => {
           label="Blog made by"
           variant="filled"
           fullWidth
-          sx={{
-            marginBottom: 2,
-            background: '#F5F5F5',
-            borderRadius: '5px',
-          }}
           id="author"
           value={newBlog.author}
           name="Author"
@@ -88,11 +77,6 @@ const BlogForm = ({ createBlog }) => {
           variant="filled"
           fullWidth
           multiline
-          sx={{
-            marginBottom: 2,
-            background: '#F5F5F5',
-            borderRadius: '5px',
-          }}
           minRows={5}
           id="url"
           value={newBlog.url}
@@ -109,10 +93,13 @@ const BlogForm = ({ createBlog }) => {
         variant="contained"
         id="add-blog"
         type="submit"
+        color="primary"
         sx={{
           color: '#fff',
           borderColor: '#fff',
-          padding: '6px 16px',
+          padding: '16px 16px',
+          width: '100%',
+          borderRadius: '5px',
         }}
       >
         Create Blog
