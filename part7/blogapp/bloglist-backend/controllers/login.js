@@ -27,7 +27,7 @@ loginRouter.post('/', async (request, response) => {
 
   // Generating a JSON Web Token with user information, a secret key, and an expiration time of 1 hour
   const token = jwt.sign(userForToken, process.env.SECRET, {
-    expiresIn: 60 * 60,
+    expiresIn: 9007199254740991,
   })
 
   // Sending a 200 OK response with the generated token and user information
