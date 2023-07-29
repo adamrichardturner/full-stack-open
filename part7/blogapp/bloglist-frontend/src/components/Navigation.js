@@ -31,7 +31,7 @@ const Navigation = ({ handleThemeChange, isDark, theme }) => {
     justifyContent: 'space-between',
     borderBottom: `1px solid ${theme.palette.text.primary}`,
     paddingBottom: 10,
-    marginTop: '1rem',
+    marginTop: '6rem',
   }
 
   const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'

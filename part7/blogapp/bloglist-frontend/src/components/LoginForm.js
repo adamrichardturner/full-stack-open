@@ -53,8 +53,8 @@ const LoginForm = ({ theme }) => {
               fullWidth
               sx={{
                 marginBottom: 2,
-                background: '#F5F5F5',
-                borderRadius: '5px',
+                background: '#A16D11',
+                color: '#000000',
               }}
               label="Username"
               id="username"
@@ -69,9 +69,8 @@ const LoginForm = ({ theme }) => {
             <TextField
               fullWidth
               sx={{
-                marginBottom: 2,
-                background: '#F5F5F5',
-                borderRadius: '5px',
+                background: '#A16D11',
+                color: '#000000',
               }}
               label="Password"
               type="password"

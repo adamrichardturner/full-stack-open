@@ -64,7 +64,7 @@ export const darkTheme = createTheme({
     h2: {
       color: '#ffffff',
       padding: 0,
-      margin: '2rem 0',
+      margin: '1.75rem 0',
       fontSize: '2rem',
     },
     h3: {

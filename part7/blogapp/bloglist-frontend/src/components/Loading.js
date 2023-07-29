@@ -1,8 +1,9 @@
 import Loader from '../loading.svg'
+import { Box } from '@mui/material'
 
 const Loading = () => {
   return (
-    <div
+    <Box
       style={{
         width: '100%',
         height: '100%',
@@ -12,7 +13,7 @@ const Loading = () => {
       }}
     >
       <img src={Loader} alt="Loading Data" />
-    </div>
+    </Box>
   )
 }
 

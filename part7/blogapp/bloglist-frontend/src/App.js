@@ -74,7 +74,6 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Notification />
       <Container maxWidth="md">
         <Router>
           <Navigation
@@ -82,6 +81,7 @@ const App = () => {
             isDark={isDarkMode}
             theme={theme}
           />
+          <Notification />
           <Routes>
             <Route path="/users/:id" element={<UserView />} />
             <Route path="/users" element={<UserSummary />} />

@@ -53,12 +53,17 @@ const Notification = () => {
   }
 
   return (
-    <Box className={`notification ${visible ? 'notification-show' : ''}`}>
+    <Box
+      className={`notification ${visible ? 'notification-show' : ''}`}
+      sx={{
+        width: '400px',
+      }}
+    >
       {/* Add 'notification-show' class when 'visible' is true */}
       <Alert
         severity={alertStyle}
         sx={{
-          width: isSmallScreen ? '100%' : '40vw',
+          width: isSmallScreen ? '100%' : '100%',
         }}
         icon={<AssignmentIcon color="primary" />}
       >
