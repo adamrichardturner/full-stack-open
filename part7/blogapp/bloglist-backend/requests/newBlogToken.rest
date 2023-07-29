@@ -1,10 +1,9 @@
 post http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0dXJuZXI4OCIsImlkIjoiNjQzZDQzZjFmMDIxYzA2ZmNmNDI4ODBjIiwiaWF0IjoxNjgxOTA3NzI0LCJleHAiOjE2ODE5MTEzMjR9.rKhtmakrFSIwJ5pO9VoveCme3SmwiHHhkaKIgZmGEfk
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkYW1yaWNoYXJkdHVybmVyIiwiaWQiOiI2NGE3MGVkOWZlOGJlZTlkNzYyMjFkNTYiLCJpYXQiOjE2OTA2NDA2MjksImV4cCI6MTY5MDY0NDIyOX0.k1wBizEZaSk3EoNc4LRaAHn8wjEui7NnNqTqgmPY38k
 {
-    "title": "On Liberties",
-    "author": "John Stuartz Mill",
-    "url": "https://jsmill.com/",
+    "title": "Pssst...Welcome to Blogz, the next Threads, which was the next X, which was Twitter?",
+    "author": "Adam Turner from Blogz, your first friend",
+    "url": "Hello. This is a test application at the moment. Feel free to like, comment and make blogs. If you want to abuse me, that's fine too, but I'll send a dangerous owl your way if you do.",
     "likes": 7
 }
