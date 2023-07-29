@@ -21,10 +21,20 @@ const userSlice = createSlice({
     setUsers(state, action) {
       state.allUsers = action.payload
     },
+    addBlogToUser(state, action) {
+      console.log(action.payload)
+      const { username, blogId } = action.payload
+      const userToUpdate = state.user.allUsers.find(
+        (user) => user.username === username
+      )
+      if (userToUpdate) {
+        userToUpdate.blogs.push(blogId)
+      }
+    },
   },
 })
 
-export const { addUser, logout, setUsers } = userSlice.actions
+export const { addUser, logout, setUsers, addBlogToUser } = userSlice.actions
 
 export const setLogin = (username, password) => {
   return async (dispatch) => {
@@ -41,6 +51,7 @@ export const setLogin = (username, password) => {
 export const initializeUsers = () => {
   return async (dispatch) => {
     const users = await userService.getUsers()
+    console.log(users)
     await dispatch(setUsers(users))
   }
 }

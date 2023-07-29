@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, TextField } from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material'
 
 const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({
@@ -30,14 +30,11 @@ const BlogForm = ({ createBlog }) => {
         marginTop: 15,
       }}
     >
-      <h2
-        style={{
-          paddingBottom: 5,
-        }}
-      >
+      <Typography variant="h3" marginBottom={2.75}>
         Create new Blog
-      </h2>
-      <div
+      </Typography>
+
+      <Box
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -70,14 +67,13 @@ const BlogForm = ({ createBlog }) => {
             }))
           }
         />
-      </div>
-      <div>
+      </Box>
+      <Box>
         <TextField
           label="Blog Summary:"
           variant="filled"
           fullWidth
           multiline
-          minRows={5}
           id="url"
           value={newBlog.url}
           name="Url"
@@ -88,7 +84,7 @@ const BlogForm = ({ createBlog }) => {
             }))
           }
         />
-      </div>
+      </Box>
       <Button
         variant="contained"
         id="add-blog"

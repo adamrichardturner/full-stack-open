@@ -29,7 +29,7 @@ const Navigation = ({ handleThemeChange, isDark, theme }) => {
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
-    borderBottom: '1px solid #fff',
+    borderBottom: `1px solid ${theme.palette.text.primary}`,
     paddingBottom: 10,
     marginTop: '1rem',
   }

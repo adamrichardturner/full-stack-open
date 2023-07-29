@@ -46,8 +46,10 @@ const App = () => {
 
   useEffect(() => {
     const getLatest = () => {
-      getBlogs()
-      getAll()
+      const blogs = getBlogs()
+      const users = getAll()
+      console.log(users)
+      console.log(blogs)
     }
     getLatest()
   }, [])

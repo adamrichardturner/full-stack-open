@@ -52,7 +52,7 @@ export const darkTheme = createTheme({
       // (This will override the color set in allVariants)
       color: '#ffffff', // Replace '#555' with your desired paragraph color
       fontWeight: '600',
-      textDecoration: 'underline',
+      fontStyle: 'italic',
     },
     h1: {
       color: '#ffffff',
@@ -63,9 +63,16 @@ export const darkTheme = createTheme({
     },
     h2: {
       color: '#ffffff',
+      padding: 0,
+      margin: '2rem 0',
+      fontSize: '2rem',
+    },
+    h3: {
+      color: '#ffffff',
       margin: 0,
       padding: 0,
-      marginRight: '10px',
+      fontSize: '1.25rem',
+      fontWeight: '600',
     },
     // Other typography variants and styles can be defined here
   },
@@ -115,10 +122,14 @@ export const darkTheme = createTheme({
     MuiListItem: {
       styleOverrides: {
         root: {
-          background: 'black',
-          opacity: '0.4',
+          opacity: '1',
           borderBottom: '1px solid white',
         },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {},
       },
     },
     MuiAlert: {

@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Box, Button, Typography, Link as MuiLink } from '@mui/material'
+import {
+  Box,
+  Button,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Link as MuiLink,
+} from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
 const Blog = ({ blog, updateLikes, removeBlog, user }) => {
   const [visible, setVisible] = useState(false)
+
   const toggleDetails = () => {
     setVisible(!visible)
-  }
-
-  const showWhenVisible = {
-    display: visible ? 'flex' : 'none',
   }
 
   const updatedBlog = {
@@ -37,7 +42,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
       marginTop={2}
       borderRadius={2}
     >
-      <div className="blog-details">
+      <Box className="blog-details">
         <MuiLink component={RouterLink} to={`/blogs/${blog.id}`}>
           <span
             style={{
@@ -55,7 +60,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
         <Typography variant="paragraph">
           <p
             style={{
-              marginTop: '1rem',
+              margin: '1rem 0',
             }}
           >
             {blog.url}
@@ -65,13 +70,25 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
         <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
           {blog.user.name}
         </MuiLink>
-      </div>
-      <div style={showWhenVisible} className="blog-extra-details">
-        {blog.comments.map((comment, index) => (
-          <li key={index}>{comment}</li>
-        ))}
-      </div>
-      <div
+      </Box>
+      <Box
+        sx={{
+          display: visible ? 'flex' : 'none',
+          flexDirection: 'column',
+        }}
+      >
+        <List>
+          <Typography variant="h3">Comments</Typography>
+          {blog.comments.map((comment, index) => (
+            <Typography variant="paragraph" key={index}>
+              <ListItem>
+                <ListItemText>{comment}</ListItemText>
+              </ListItem>
+            </Typography>
+          ))}
+        </List>
+      </Box>
+      <Box
         style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -79,7 +96,7 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
           padding: 5,
         }}
       >
-        <div
+        <Box
           style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -107,14 +124,14 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
                 : null}
             </Typography>
           </a>
-        </div>
-        <div
+        </Box>
+        <Box
           style={{
             display: 'flex',
             flexDirection: 'row',
           }}
         >
-          <div
+          <Box
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -132,8 +149,8 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
                 paddingLeft: '3px',
               }}
             />
-          </div>
-          <div>
+          </Box>
+          <Box>
             {user.name === blog.user.name ? (
               <Button
                 variant="contained"
@@ -150,9 +167,9 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
                 Remove
               </Button>
             ) : null}
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   )
 }

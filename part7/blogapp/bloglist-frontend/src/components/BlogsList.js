@@ -5,6 +5,7 @@ import BlogForm from './BlogForm'
 import Blog from './Blog'
 import { useBlogs } from '../hooks'
 import Loading from './Loading'
+import { Box } from '@mui/material'
 
 const BlogsList = () => {
   const { blogs } = useSelector((state) => state.blogs)
@@ -25,12 +26,6 @@ const BlogsList = () => {
     createBlog(blogData)
   }
 
-  const loadingStyle = {
-    minHeight: '75vh',
-    display: 'flex',
-    alignItems: 'center',
-  }
-
   const list = blogs.map((blog, index) => {
     return (
       <>
@@ -47,13 +42,15 @@ const BlogsList = () => {
 
   const isLoaded = blogs.length > 0
 
-  return (
-    <div style={isLoaded ? {} : loadingStyle}>
-      {isLoaded ? list : <Loading />}
+  return isLoaded ? (
+    <Box>
+      {list}
       <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <BlogForm createBlog={handleCreateBlog} />
       </Togglable>
-    </div>
+    </Box>
+  ) : (
+    <Loading />
   )
 }
 

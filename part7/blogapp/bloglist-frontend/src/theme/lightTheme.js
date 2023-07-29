@@ -49,7 +49,7 @@ export const lightTheme = createTheme({
       // (This will override the color set in allVariants)
       color: '#000000', // Replace '#555' with your desired paragraph color
       fontWeight: '600',
-      textDecoration: 'underline',
+      fontStyle: 'italic',
     },
     h1: {
       color: '#000000',
@@ -60,9 +60,16 @@ export const lightTheme = createTheme({
     },
     h2: {
       color: '#000000',
+      padding: 0,
+      margin: '2rem 0',
+      fontSize: '2rem',
+    },
+    h3: {
+      color: '#000000',
       margin: 0,
       padding: 0,
-      marginRight: '10px',
+      fontSize: '1.25rem',
+      fontWeight: '600',
     },
     // Other typography variants and styles can be defined here
   },

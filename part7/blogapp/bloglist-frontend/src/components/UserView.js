@@ -1,20 +1,28 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
+import Loading from './Loading'
 
 const UserView = () => {
   const id = useParams().id
   const allUsers = useSelector((state) => state.user.allUsers)
-  const user = allUsers.find((a) => a.id === id)
-  const blogs = user.blogs.map((blog) => <li key={blog.id}>{blog.title}</li>)
-  if (!user) {
-    return null
+  if (!allUsers) {
+    return <Loading />
   }
+  const user = allUsers.find((a) => a.id === id)
+  const blogs = user.blogs.map((blog) => (
+    <ListItem key={blog.id}>
+      <ListItemText>{blog.title}</ListItemText>
+    </ListItem>
+  ))
   return (
-    <div>
-      <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>{blogs}</ul>
-    </div>
+    <Box>
+      <Typography variant="h2" color="primary">
+        User: {user.name}
+      </Typography>
+      <Typography variant="h3">Blogs added:</Typography>
+      <List>{blogs}</List>
+    </Box>
   )
 }
 

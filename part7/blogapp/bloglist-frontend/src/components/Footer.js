@@ -6,7 +6,7 @@ const Footer = () => {
       style={{
         minHeight: 72,
         display: 'flex',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center',
       }}
     >

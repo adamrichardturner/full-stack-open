@@ -30,6 +30,7 @@ const BlogFooter = ({ blog, user }) => {
       text: comment,
     }
     addComment(id, obj)
+    return setComment('')
   }
   return (
     <div>
@@ -120,7 +121,7 @@ const BlogFooter = ({ blog, user }) => {
           </Button>
         </form>
         <List
-          style={{
+          sx={{
             paddingTop: '2rem',
           }}
         >

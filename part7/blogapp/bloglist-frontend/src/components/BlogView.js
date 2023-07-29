@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import BlogFooter from './BlogFooter'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
+import Loading from './Loading'
 
 const BlogView = () => {
   const id = useParams().id
@@ -10,31 +11,31 @@ const BlogView = () => {
   const blog = blogs.find((b) => b.id === id)
 
   if (!blog) {
-    return null
+    return <Loading />
   }
 
   return (
-    <article className="blog">
-      <div className="blog__meta">
-        <Typography>
-          <h2
-            style={{
-              fontSize: '3rem',
-              lineHeight: '3.2rem',
-              marginTop: 15,
-            }}
+    <Box>
+      <article>
+        <Box className="blog__meta">
+          <Typography
+            variant="h2"
+            lineHeight={1}
+            marginTop={2}
+            marginBottom={2}
+            color="primary"
           >
             {blog.title}
-          </h2>
-        </Typography>
-      </div>
-      <div className="blog__content">
-        <Typography variant="paragraph">
-          <p>{blog.url}</p>
-        </Typography>
-      </div>
-      <BlogFooter blog={blog} user={user} />
-    </article>
+          </Typography>
+        </Box>
+        <Box className="blog__content">
+          <Typography variant="paragraph">
+            <p>{blog.url}</p>
+          </Typography>
+        </Box>
+        <BlogFooter blog={blog} user={user} />
+      </article>
+    </Box>
   )
 }
 

@@ -15,7 +15,7 @@ export const useBlogs = () => {
   const getBlogs = async () => {
     try {
       const blogs = await dispatch(initializeBlogs())
-      console.log(blogs)
+      return blogs
     } catch (error) {
       console.error(error)
     }
@@ -31,9 +31,10 @@ export const useBlogs = () => {
     }
   }
 
-  const createBlog = (blogData) => {
+  const createBlog = async (blogData) => {
     try {
-      dispatch(createNewBlog(blogData))
+      await dispatch(createNewBlog(blogData))
+      await dispatch(initializeUsers())
       dispatch(
         setNotification(
           `a new blog ${blogData.title} by ${blogData.author} added`,

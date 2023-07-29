@@ -10,7 +10,6 @@ const blogsSlice = createSlice({
   initialState, // Initial state object
   reducers: {
     appendBlog(state, action) {
-      console.log(action.payload)
       // Reducer for appending a new blog to the state
       state.blogs.push(action.payload) // Add the payload (new blog) to the blogs array
     },
@@ -40,8 +39,6 @@ const blogsSlice = createSlice({
         ...blogToComment,
         comments: [...blogToComment.comments, text],
       }
-
-      console.log(updatedBlog)
 
       // Replace the blogToComment in the state.blogs array with the updatedBlog
       state.blogs = state.blogs.map((b) => (b.id === id ? updatedBlog : b))
